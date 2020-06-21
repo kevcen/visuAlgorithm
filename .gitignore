@@ -1,0 +1,6 @@
+# IntelliJ Idea
+.idea/
+
+# Gradle template
+.gradle/
+build/
