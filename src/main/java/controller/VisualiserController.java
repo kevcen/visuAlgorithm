@@ -21,6 +21,7 @@ import java.util.Collection;
 
 public class VisualiserController {
 //    private static final double COST_OF_MOVEMENT = 1.0;
+
     private static final double TIME_PER_FRAME = 10;
     private BoardModel boardModel;
     private Vertex startVertex, endVertex;
