@@ -32,7 +32,7 @@ public abstract class AbstractSort extends AbstractAlgorithm implements Sort {
      */
     public void visualise() {
         for (int i = 0 ; i < BarsModel.NUM_OF_BARS; i++) {
-            Bar bar = model.getElements().get(i);
+            var bar = model.getElements().get(i);
             bar.setX(i * BarsModel.getWidthOfBar() + Bar.PADDING);
             bar.setFill(Color.BLACK);
 //            if(bar.isVisited()) bar.setFill(Color.LIGHTSEAGREEN);

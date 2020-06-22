@@ -8,7 +8,7 @@ import model.VisualiserModel;
 
 
 public interface Algorithm {
-    double TIME_PER_FRAME = 10;
+    double TIME_PER_FRAME = 5;
     void setModel(VisualiserModel model);
     Timeline getAnimation();
     boolean canPlay();

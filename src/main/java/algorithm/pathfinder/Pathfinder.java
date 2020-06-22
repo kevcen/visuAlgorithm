@@ -9,6 +9,4 @@ public interface Pathfinder extends Algorithm {
     double DIAG_COST = Math.sqrt(2);
     void setVertices(Vertex start, Vertex end);
     void setVertexEventHandlers(Vertex vertex);
-    Vertex getStartVertex();
-    Vertex getEndVertex();
 }

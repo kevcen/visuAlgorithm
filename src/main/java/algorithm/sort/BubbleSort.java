@@ -12,8 +12,8 @@ public class BubbleSort extends AbstractSort {
 
     @Override
     public void initialiseStep() {
-        Bar last = model.getElements().get(BarsModel.NUM_OF_BARS - 1);
-        model.getElements().get(BarsModel.NUM_OF_BARS - 1).setVisited();
+        var lastBar = model.getElements().get(BarsModel.NUM_OF_BARS - 1);
+        lastBar.setVisited();
     }
 
     @Override
@@ -24,7 +24,7 @@ public class BubbleSort extends AbstractSort {
     @Override
     public void doStep() {
         boolean swapped = false;
-        List<Bar> elements = model.getElements();
+        var elements = model.getElements();
         for (int i = 1; i < BarsModel.NUM_OF_BARS; i++) {
             currentBar = elements.get(i);
             if (elements.get(i).isVisited()) {

@@ -14,14 +14,14 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
 
         //show login screen
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("view/visualiser.fxml"));
+        var loader = new FXMLLoader(getClass().getResource("view/visualiser.fxml"));
         Parent root = loader.load();
         VisualiserController controller = loader.getController();
 
         Scene mainScene = new Scene(root);
-        mainScene.setFill(null);
         controller.addScene(mainScene);
 
+//        mainScene.setFill(null);
 //        stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(mainScene);
         stage.setTitle("VisuAlgorithms");

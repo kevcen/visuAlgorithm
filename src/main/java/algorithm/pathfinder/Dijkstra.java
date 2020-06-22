@@ -11,7 +11,7 @@ public class Dijkstra extends AbstractPathfinder {
     @Override
     public void doStep() {
         // Get the fringe node with smallest distance
-        Vertex currentVertex = visitSmallestVertex(distances);
+        var currentVertex = visitSmallestVertex(distances);
 
         updateNeighbours(currentVertex, distances);
     }

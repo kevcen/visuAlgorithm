@@ -80,7 +80,7 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
             System.out.println("No path available");
             return;
         }
-        Vertex currentVertex = endVertex.getParentVertex();
+        var currentVertex = endVertex.getParentVertex();
         while (currentVertex != startVertex) {
             currentVertex.setStyle("-fx-background-color: navajowhite;" + Vertex.styles);
             currentVertex = currentVertex.getParentVertex();
@@ -95,7 +95,7 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
      */
     protected Vertex visitSmallestVertex(ObservableMap<Vertex, Double> map) {
         // Get the fringe node with smallest f value
-        Vertex currentVertex = getFringe().get(0);
+        var currentVertex = getFringe().get(0);
         for (Vertex fringeNode : getFringe()) {
             if (map.get(fringeNode) < map.get(currentVertex)) {
                 currentVertex = fringeNode;

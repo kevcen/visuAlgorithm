@@ -6,6 +6,7 @@ import algorithm.pathfinder.Dijkstra;
 import algorithm.sort.BubbleSort;
 import algorithm.sort.InsertionSort;
 import algorithm.sort.MergeSort;
+import algorithm.sort.QuickSort;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXSlider;
@@ -48,7 +49,7 @@ public class VisualiserController {
     private Timeline animation = new Timeline();
 
     private ObservableList<String> algorithmList = FXCollections.observableArrayList(
-            "A* Pathfinder", "Dijkstra's Pathfinder", "Bubble Sort", "Insertion Sort", "Merge Sort");
+            "A* Pathfinder", "Dijkstra's Pathfinder", "Bubble Sort", "Insertion Sort", "Merge Sort", "Quick Sort");
 
     @FXML
     public void initialize() {
@@ -164,6 +165,13 @@ public class VisualiserController {
                 currentAlgorithm.setModel(visModel);
                 currentAlgorithm.asSort().randomiseBars();
                 break;
+            case "Quick Sort":
+                currentAlgorithm = new QuickSort();
+                initialiseBars();
+                currentAlgorithm.setModel(visModel);
+                currentAlgorithm.asSort().randomiseBars();
+                break;
+
         }
 
     }

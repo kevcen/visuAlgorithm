@@ -8,8 +8,8 @@ import javafx.util.Duration;
 public abstract class AbstractAlgorithm implements Algorithm {
     @Override
     public Timeline getAnimation() {
-        Timeline timeline = new Timeline();
-        KeyFrame kf = new KeyFrame(
+        var timeline = new Timeline();
+        var kf = new KeyFrame(
                 Duration.millis(Algorithm.TIME_PER_FRAME), //TODO: Use slider for time
                 e -> {
                     if (hasNext()) {
