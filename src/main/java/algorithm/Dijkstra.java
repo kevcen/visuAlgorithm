@@ -9,28 +9,26 @@ import javafx.util.Duration;
 import model.BoardModel;
 import model.Vertex;
 
+public class Dijkstra extends AbstractPathfinder {
+    private ObservableMap<Vertex, Double> distances = FXCollections.observableHashMap();
 
-public class AStar extends AbstractPathfinder {
-    private ObservableMap<Vertex, Double> fValues = FXCollections.observableHashMap();
 
-    public AStar(BoardModel model) {
-        super(model);
-    }
-
-    public AStar(BoardModel model, Vertex start, Vertex end) {
+    public Dijkstra(BoardModel model, Vertex start, Vertex end) {
         super(model, start, end);
     }
 
+    @Override
+    public void doStep() {
+        // Get the fringe node with smallest distance
+        Vertex currentVertex = visitSmallestVertex(distances);
+
+        updateNeighbours(currentVertex, distances);
+    }
 
     @Override
     public void initialiseStep() {
-        processHeuristic();
-        // Initialise starting node and it's neighbours
-        startVertex.setGValue(0);
-        fValues.put(startVertex, startVertex.gValue() + startVertex.hValue());
+        startVertex.setVisited(true);
         for (Vertex neighbour : startVertex.getNeighbours()) {
-            if (neighbour.isWall())
-                continue;
             getFringe().add(neighbour);
             neighbour.setParentVertex(startVertex);
 
@@ -39,10 +37,9 @@ public class AStar extends AbstractPathfinder {
             else
                 neighbour.setGValue(DIAG_COST);
 
-            fValues.put(neighbour, neighbour.gValue() + neighbour.hValue());
+            distances.put(neighbour, neighbour.gValue());
         }
     }
-
 
     @Override
     public Timeline getAnimation() {
@@ -62,27 +59,4 @@ public class AStar extends AbstractPathfinder {
         timeline.setCycleCount(Animation.INDEFINITE);
         return timeline;
     }
-
-    @Override
-    public void doStep() {
-        assert (!endVertex.isVisited() && !getFringe().isEmpty());
-
-        // Get the fringe node with smallest f value
-        Vertex currentVertex = visitSmallestVertex(fValues);
-
-        updateNeighbours(currentVertex, fValues);
-    }
-
-    /**
-     * Calculates euclidean distance from current vertex to end vertex for heuristic
-     */
-    public void processHeuristic() {
-        for (Vertex vertex : model.getBoard()) {
-            double xDistance = Math.abs(vertex.getCol() - endVertex.getCol());
-            double yDistance = Math.abs(vertex.getRow() - endVertex.getRow());
-
-            vertex.setHValue(Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2)));
-        }
-    }
-
 }

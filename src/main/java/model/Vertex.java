@@ -73,27 +73,29 @@ public class Vertex extends JFXButton {
         parentVertex = parent;
     }
 
-//    /*Sort will favour the straight paths over diagonals*/
-//    public void sortNeighbours() {
-//        //based of quicksort
-//        int i = 0;
-//        int j = 0;
-//        while (j < neighbours.size()) {
-//            Vertex temp = neighbours.get(j);
-//            if(temp.getRow() == row || temp.getCol() == col) {
-//                neighbours.set(j, neighbours.get(i));
-//                neighbours.set(i, temp);
-//                i++;
-//            }
-//            j++;
-//        }
-//    }
 
     public boolean isWall() {
         return isWall;
     }
 
     public void setWall(boolean wall) {
+        if(wall) {
+            setStyle(styles + ";-fx-background-color: black");
+        } else {
+            resetStyle();
+        }
         isWall = wall;
+    }
+
+    public void resetStyle() {
+        setStyle(styles + ";-fx-background-color: white");
+    }
+
+    public void setStart() {
+        setStyle("-fx-background-color: mediumslateblue");
+    }
+
+    public void setEnd() {
+        setStyle("-fx-background-color: midnightblue");
     }
 }

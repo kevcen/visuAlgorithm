@@ -21,15 +21,15 @@ public class Main extends Application {
         Parent root = loader.load();
         VisualiserController controller = loader.getController();
         BoardModel model = new BoardModel();
-        controller.initModel(model);
+        controller.initBoardModel(model);
 
         Scene mainScene = new Scene(root);
         mainScene.setFill(null);
         controller.addScene(mainScene);
 
-        stage.initStyle(StageStyle.TRANSPARENT);
+//        stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(mainScene);
-        stage.setTitle("VisuA*liser");
+        stage.setTitle("VisuAlgorithms");
         stage.show();
     }
 }
