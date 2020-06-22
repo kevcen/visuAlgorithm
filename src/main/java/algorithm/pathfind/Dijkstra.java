@@ -1,17 +1,11 @@
-package algorithm;
+package algorithm.pathfind;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
-import javafx.util.Duration;
-import model.BoardModel;
 import model.Vertex;
 
-public class Dijkstra extends AbstractPathfinder {
+public class Dijkstra extends AbstractPathfind {
     private ObservableMap<Vertex, Double> distances = FXCollections.observableHashMap();
-
 
 
     @Override

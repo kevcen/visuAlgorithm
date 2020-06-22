@@ -1,10 +1,15 @@
 package controller;
 
-import algorithm.AStar;
-import algorithm.Dijkstra;
-import algorithm.Pathfinder;
+import algorithm.Algorithm;
+import algorithm.pathfind.AStar;
+import algorithm.pathfind.Dijkstra;
+import algorithm.sort.BubbleSort;
+import algorithm.sort.InsertionSort;
+import algorithm.sort.MergeSort;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXScrollPane;
+import com.jfoenix.controls.JFXSlider;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,8 +22,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import model.BoardModel;
-import model.Vertex;
+import model.*;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -26,7 +30,7 @@ import java.util.Set;
 
 public class VisualiserController {
 
-    private BoardModel boardModel;
+    private VisualiserModel visModel;
     private Scene scene;
     @FXML
     AnchorPane visualiserPane;
@@ -34,19 +38,18 @@ public class VisualiserController {
     JFXButton playBtn;
     @FXML
     JFXComboBox<String> algorithmCombo;
+    @FXML
+    JFXSlider timeSlider;
 
     GridPane grid;
+    AnchorPane barsPane;
 
-    private enum AlgorithmType {PATHFIND, SEARCH, SORT}
-
-    ;
-    private AlgorithmType currentType;
-    private Pathfinder currentAlgorithm;
+    private Algorithm currentAlgorithm;
     private Set<KeyCode> pressedKeys = new HashSet<>();
     private Timeline animation = new Timeline();
 
     private ObservableList<String> algorithmList = FXCollections.observableArrayList(
-            "A* Pathfinder", "Dijkstra's Pathfinder");
+            "A* Pathfind", "Dijkstra's Pathfind", "Bubble Sort", "Insertion Sort", "Merge Sort");
 
     @FXML
     public void initialize() {
@@ -76,7 +79,7 @@ public class VisualiserController {
     }
 
     private void initialiseBoard() {
-        boardModel = new BoardModel();
+        visModel = new BoardModel();
 
         try {
             grid = FXMLLoader.load(getClass().getResource("../view/board.fxml"));
@@ -88,52 +91,80 @@ public class VisualiserController {
         grid.getColumnConstraints().clear();
         grid.getRowConstraints().clear();
 
-        initBoardModel();
+        for (Vertex vertex : visModel.asBoardModel().getBoard()) {
+            // Set on button click
+            currentAlgorithm.asPathfind().setVertexEventHandlers(vertex);
+            // Set UI
+            grid.add(vertex, vertex.getCol(), vertex.getRow());
+        }
 
         visualiserPane.getChildren().clear();
         visualiserPane.getChildren().add(grid);
     }
 
-    public void initBoardModel() {
-        this.boardModel = new BoardModel();
 
-        for (Vertex vertex : boardModel.getBoard()) {
-            // Set on button click
-            currentAlgorithm.setVertexEventHandlers(vertex);
-            // Set UI
-            grid.add(vertex, vertex.getCol(), vertex.getRow());
+    private void initialiseBars() {
+        visModel = new BarsModel();
+
+        try {
+            barsPane = FXMLLoader.load(getClass().getResource("../view/bars.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+        for (Bar bar : visModel.asBarsModel().getElements()) {
+            barsPane.getChildren().add(bar);
+        }
+
+        visualiserPane.getChildren().clear();
+        visualiserPane.getChildren().add(barsPane);
     }
-
-
 
 
 
     @FXML
     public void performAlgorithm(ActionEvent event) {
+        if (!currentAlgorithm.canPlay()) {
+            return;
+        }
         currentAlgorithm.initialiseStep();
+
         animation = currentAlgorithm.getAnimation();
 
-        if (currentAlgorithm.canPlay()) animation.play();
+        animation.play();
     }
 
     @FXML
     public void changeAlgorithm(ActionEvent event) {
         switch(algorithmCombo.getValue()) {
-            case "A* Pathfinder":
+            case "A* Pathfind":
                 currentAlgorithm = new AStar();
                 initialiseBoard();
-                currentAlgorithm.setModel(boardModel);
-                currentType = AlgorithmType.PATHFIND;
+                currentAlgorithm.setModel(visModel);
                 break;
-            case "Dijkstra's Pathfinder":
+            case "Dijkstra's Pathfind":
                 currentAlgorithm = new Dijkstra();
                 initialiseBoard();
-                currentAlgorithm.setModel(boardModel);
-                currentType = AlgorithmType.PATHFIND;
+                currentAlgorithm.setModel(visModel);
                 break;
             case "Bubble Sort":
-
+                currentAlgorithm = new BubbleSort();
+                initialiseBars();
+                currentAlgorithm.setModel(visModel);
+                currentAlgorithm.asSort().randomiseBars();
+                break;
+            case "Insertion Sort":
+                currentAlgorithm = new InsertionSort();
+                initialiseBars();
+                currentAlgorithm.setModel(visModel);
+                currentAlgorithm.asSort().randomiseBars();
+                break;
+            case "Merge Sort":
+                currentAlgorithm = new MergeSort();
+                initialiseBars();
+                currentAlgorithm.setModel(visModel);
+                currentAlgorithm.asSort().randomiseBars();
+                break;
         }
 
     }

@@ -1,5 +1,7 @@
-package algorithm;
+package algorithm.pathfind;
 
+import algorithm.search.Search;
+import algorithm.sort.Sort;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -9,17 +11,18 @@ import javafx.collections.ObservableMap;
 import javafx.util.Duration;
 import model.BoardModel;
 import model.Vertex;
+import model.VisualiserModel;
 
 import java.util.Collection;
 
-public abstract class AbstractPathfinder implements Pathfinder {
+public abstract class AbstractPathfind implements Pathfind {
     private ObservableList<Vertex> fringe = FXCollections.observableArrayList();
     protected BoardModel model;
     protected Vertex startVertex = null, endVertex = null;
 
 
-    public void setModel(BoardModel model) {
-        this.model = model;
+    public void setModel(VisualiserModel model) {
+        this.model = (BoardModel) model;
     }
 
 
@@ -46,6 +49,7 @@ public abstract class AbstractPathfinder implements Pathfinder {
     /**
      * Returns true if and only there is another step in the algorithm
      */
+    @Override
     public boolean hasNext() {
         return !endVertex.isVisited() && !getFringe().isEmpty();
     }
@@ -54,10 +58,6 @@ public abstract class AbstractPathfinder implements Pathfinder {
      * Perform the first step*
      */
     public abstract void initialiseStep();
-    /**
-     * Perform one step
-     * */
-    public abstract void doStep();
 
 
     /**
@@ -155,6 +155,30 @@ public abstract class AbstractPathfinder implements Pathfinder {
 
     public Vertex getEndVertex() {
         return endVertex;
+    }
+
+    public boolean isSort() {
+        return false;
+    }
+
+    public boolean isSearch() {
+        return false;
+    }
+
+    public boolean isPathfind() {
+        return true;
+    }
+
+    public Pathfind asPathfind() {
+        return this;
+    }
+
+    public Sort asSort() {
+        return null;
+    }
+
+    public Search asSearch() {
+        return null;
     }
 
     @Override

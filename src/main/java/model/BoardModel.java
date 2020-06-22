@@ -3,7 +3,7 @@ package model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class BoardModel {
+public class BoardModel implements VisualiserModel{
     public static final int ROWS = 40;
     public static final int COLS = 65;
 
@@ -30,5 +30,19 @@ public class BoardModel {
 
     public ObservableList<Vertex> getBoard() {
         return board;
+    }
+
+
+    public boolean isBarsModel() {
+        return false;
+    }
+    public boolean isBoardModel() {
+        return true;
+    }
+    public BarsModel asBarsModel() {
+        return null;
+    }
+    public BoardModel asBoardModel() {
+        return this;
     }
 }
