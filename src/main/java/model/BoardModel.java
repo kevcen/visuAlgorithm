@@ -7,11 +7,9 @@ public class BoardModel {
     public static final int ROWS = 40;
     public static final int COLS = 65;
 
-    private final ObservableList<Vertex> board;
+    private final ObservableList<Vertex> board = FXCollections.observableArrayList();
 
     public BoardModel() {
-        board = FXCollections.observableArrayList();
-
         // Add the list of vertices
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {

@@ -8,13 +8,11 @@ import javafx.scene.control.Button;
 public class Vertex extends JFXButton {
     public static final String styles = "-fx-background-radius: 0; -fx-border-color: black; -fx-border-width: 0.1";
     private final int row, col;
-    private double hValue;
-    private double gValue;
+    private double hValue = 0, gValue = Integer.MAX_VALUE;
 
 
     private Vertex parentVertex;
-    private boolean visited;
-    private boolean isWall;
+    private boolean visited = false, isWall = false;
 
     private ObservableList<Vertex> neighbours;
 
@@ -24,11 +22,6 @@ public class Vertex extends JFXButton {
         this.row = row;
         this.col = col;
         neighbours = FXCollections.observableArrayList();
-        //currentState = State.UNVISITED;
-        visited = false;
-        isWall = false;
-        hValue = 0;
-        gValue = Integer.MAX_VALUE;
         setMinSize(0, 0);
         setStyle("-fx-background-color: white;" + styles);
     }

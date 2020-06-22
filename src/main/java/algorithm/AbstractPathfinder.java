@@ -1,8 +1,12 @@
 package algorithm;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
+import javafx.util.Duration;
 import model.BoardModel;
 import model.Vertex;
 
@@ -13,27 +17,10 @@ public abstract class AbstractPathfinder implements Pathfinder {
     protected BoardModel model;
     protected Vertex startVertex = null, endVertex = null;
 
-    /**
-     * Constructor to initialise just the model
-     * @param model
-     */
-    public AbstractPathfinder(BoardModel model) {
+
+    public void setModel(BoardModel model) {
         this.model = model;
     }
-
-    /**
-     * Constructor which initialises the model, start and end vertices
-     * @param model
-     * @param startVertex
-     * @param endVertex
-     */
-    public AbstractPathfinder(BoardModel model, Vertex startVertex, Vertex endVertex) {
-        this(model);
-        this.startVertex = startVertex;
-        this.endVertex = endVertex;
-    }
-
-
 
 
     /**
@@ -47,12 +34,6 @@ public abstract class AbstractPathfinder implements Pathfinder {
         startVertex = start;
         endVertex = end;
     }
-
-    /**
-     * Returns the animation to be played to visualise this algorithm
-     */
-
-
 
     /**
      * Returns the fringe of the algorithm
@@ -168,5 +149,67 @@ public abstract class AbstractPathfinder implements Pathfinder {
         }
     }
 
+    public Vertex getStartVertex() {
+        return startVertex;
+    }
 
+    public Vertex getEndVertex() {
+        return endVertex;
+    }
+
+    @Override
+    public void setVertexEventHandlers(Vertex vertex) {
+        // Clicked, change state of vertices
+        vertex.setOnMouseClicked(e -> {
+            if (startVertex == vertex) {
+                vertex.resetStyle();
+                startVertex = null;
+            } else if (endVertex == vertex) {
+                vertex.resetStyle();
+                endVertex = null;
+            } else if (!startIsSet()) {
+                vertex.setStart();
+                startVertex = vertex;
+            } else if (!endIsSet()) {
+                vertex.setEnd();
+                endVertex = vertex;
+            }
+            setVertices(startVertex, endVertex);
+        });
+    }
+
+    private boolean startIsSet() {
+        return startVertex != null;
+    }
+
+    private boolean endIsSet() {
+        return endVertex != null;
+    }
+
+    public boolean canPlay() {
+        return startIsSet() && endIsSet();
+
+    }
+
+    /**
+     * Returns the animation to be played to visualise this algorithm
+     */
+    @Override
+    public Timeline getAnimation() {
+        Timeline timeline = new Timeline();
+        KeyFrame kf = new KeyFrame(
+                Duration.millis(TIME_PER_FRAME),
+                e -> {
+                    if (hasNext()) {
+                        doStep();
+                        visualise(getFringe());
+                    } else {
+                        timeline.stop();
+                        showFinalPath();
+                    }
+                });
+        timeline.getKeyFrames().add(kf);
+        timeline.setCycleCount(Animation.INDEFINITE);
+        return timeline;
+    }
 }

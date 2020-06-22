@@ -13,13 +13,6 @@ import model.Vertex;
 public class AStar extends AbstractPathfinder {
     private ObservableMap<Vertex, Double> fValues = FXCollections.observableHashMap();
 
-    public AStar(BoardModel model) {
-        super(model);
-    }
-
-    public AStar(BoardModel model, Vertex start, Vertex end) {
-        super(model, start, end);
-    }
 
 
     @Override
@@ -43,25 +36,6 @@ public class AStar extends AbstractPathfinder {
         }
     }
 
-
-    @Override
-    public Timeline getAnimation() {
-        Timeline timeline = new Timeline();
-        KeyFrame kf = new KeyFrame(
-                Duration.millis(TIME_PER_FRAME),
-                e -> {
-                    if (hasNext()) {
-                        doStep();
-                        visualise(getFringe());
-                    } else {
-                        timeline.stop();
-                        showFinalPath();
-                    }
-                });
-        timeline.getKeyFrames().add(kf);
-        timeline.setCycleCount(Animation.INDEFINITE);
-        return timeline;
-    }
 
     @Override
     public void doStep() {

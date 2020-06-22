@@ -13,9 +13,6 @@ public class Dijkstra extends AbstractPathfinder {
     private ObservableMap<Vertex, Double> distances = FXCollections.observableHashMap();
 
 
-    public Dijkstra(BoardModel model, Vertex start, Vertex end) {
-        super(model, start, end);
-    }
 
     @Override
     public void doStep() {
@@ -41,22 +38,5 @@ public class Dijkstra extends AbstractPathfinder {
         }
     }
 
-    @Override
-    public Timeline getAnimation() {
-        Timeline timeline = new Timeline();
-        KeyFrame kf = new KeyFrame(
-                Duration.millis(TIME_PER_FRAME),
-                e -> {
-                    if (hasNext()) {
-                        doStep();
-                        visualise(getFringe());
-                    } else {
-                        timeline.stop();
-                        showFinalPath();
-                    }
-                });
-        timeline.getKeyFrames().add(kf);
-        timeline.setCycleCount(Animation.INDEFINITE);
-        return timeline;
-    }
+
 }
