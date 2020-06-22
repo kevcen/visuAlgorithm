@@ -1,10 +1,10 @@
-package algorithm.pathfind;
+package algorithm.pathfinder;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import model.Vertex;
 
-public class Dijkstra extends AbstractPathfind {
+public class Dijkstra extends AbstractPathfinder {
     private ObservableMap<Vertex, Double> distances = FXCollections.observableHashMap();
 
 

@@ -1,14 +1,12 @@
-package algorithm.pathfind;
+package algorithm.pathfinder;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import model.Vertex;
 
 
-public class AStar extends AbstractPathfind {
+public class AStar extends AbstractPathfinder {
     private ObservableMap<Vertex, Double> fValues = FXCollections.observableHashMap();
-
-
 
     @Override
     public void initialiseStep() {

@@ -1,21 +1,16 @@
-package algorithm.pathfind;
+package algorithm.pathfinder;
 
+import algorithm.AbstractAlgorithm;
 import algorithm.search.Search;
 import algorithm.sort.Sort;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
-import javafx.util.Duration;
 import model.BoardModel;
 import model.Vertex;
 import model.VisualiserModel;
 
-import java.util.Collection;
-
-public abstract class AbstractPathfind implements Pathfind {
+public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pathfinder {
     private ObservableList<Vertex> fringe = FXCollections.observableArrayList();
     protected BoardModel model;
     protected Vertex startVertex = null, endVertex = null;
@@ -54,17 +49,11 @@ public abstract class AbstractPathfind implements Pathfind {
         return !endVertex.isVisited() && !getFringe().isEmpty();
     }
 
-    /**
-     * Perform the first step*
-     */
-    public abstract void initialiseStep();
-
 
     /**
      * Use the current state of the algorithm to visualise the current state
-     * @param fringe
      */
-    public void visualise(Collection<Vertex> fringe) {
+    public void visualise() {
         for (Vertex vertex : model.getBoard()) {
             StringBuilder style = new StringBuilder();
             style.append("-fx-background-color: ");
@@ -86,7 +75,7 @@ public abstract class AbstractPathfind implements Pathfind {
     /**
      * Visualise the final path
      */
-    public void showFinalPath() {
+    public void showResult() {
         if (!endVertex.isVisited()) {
             System.out.println("No path available");
             return;
@@ -165,11 +154,11 @@ public abstract class AbstractPathfind implements Pathfind {
         return false;
     }
 
-    public boolean isPathfind() {
+    public boolean isPathfinder() {
         return true;
     }
 
-    public Pathfind asPathfind() {
+    public Pathfinder asPathfinder() {
         return this;
     }
 
@@ -215,25 +204,5 @@ public abstract class AbstractPathfind implements Pathfind {
 
     }
 
-    /**
-     * Returns the animation to be played to visualise this algorithm
-     */
-    @Override
-    public Timeline getAnimation() {
-        Timeline timeline = new Timeline();
-        KeyFrame kf = new KeyFrame(
-                Duration.millis(TIME_PER_FRAME),
-                e -> {
-                    if (hasNext()) {
-                        doStep();
-                        visualise(getFringe());
-                    } else {
-                        timeline.stop();
-                        showFinalPath();
-                    }
-                });
-        timeline.getKeyFrames().add(kf);
-        timeline.setCycleCount(Animation.INDEFINITE);
-        return timeline;
-    }
+
 }

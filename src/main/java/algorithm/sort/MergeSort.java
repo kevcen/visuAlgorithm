@@ -5,6 +5,7 @@ import model.BarsModel;
 
 public class MergeSort extends AbstractSort {
     private int size = 1;
+    private int lower = 0;
 
 
     @Override
@@ -32,17 +33,18 @@ public class MergeSort extends AbstractSort {
 
     @Override
     public void doStep() {
-        for (int lower = 0; lower < BarsModel.NUM_OF_BARS - 1; lower += 2 * size) {
-            System.out.println(lower);
-            int mid = Math.min(lower + size, BarsModel.NUM_OF_BARS);
 
-            int upper = Math.min(lower + 2 * size, BarsModel.NUM_OF_BARS);
+        int mid = Math.min(lower + size, BarsModel.NUM_OF_BARS);
+        int upper = Math.min(lower + 2 * size, BarsModel.NUM_OF_BARS);
 
-            merge(lower, mid, upper);
-            printElements();
+        merge(lower, mid, upper);
+
+        lower += 2 * size;
+
+        if (lower >= BarsModel.NUM_OF_BARS - 1) {
+            size *= 2;
+            lower = 0;
         }
-
-        size *= 2;
     }
 
     /**

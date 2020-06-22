@@ -1,18 +1,14 @@
 package algorithm.sort;
 
-import algorithm.Algorithm;
+import algorithm.AbstractAlgorithm;
+import algorithm.pathfinder.Pathfinder;
 import algorithm.search.Search;
-import algorithm.pathfind.Pathfind;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.paint.Color;
-import javafx.util.Duration;
 import model.*;
 
 import java.util.Collections;
 
-public abstract class AbstractSort implements Sort {
+public abstract class AbstractSort extends AbstractAlgorithm implements Sort {
     protected BarsModel model;
     protected Bar currentBar;
 
@@ -21,24 +17,6 @@ public abstract class AbstractSort implements Sort {
         this.model = model.asBarsModel();
     }
 
-    @Override
-    public Timeline getAnimation() {
-        Timeline timeline = new Timeline();
-        KeyFrame kf = new KeyFrame(
-                Duration.millis(Algorithm.TIME_PER_FRAME), //TODO: Use slider for time
-                e -> {
-                    if (hasNext()) {
-                        doStep();
-                        visualise();
-                    } else {
-                        timeline.stop();
-//                        showFinalPath();
-                    }
-                });
-        timeline.getKeyFrames().add(kf);
-        timeline.setCycleCount(Animation.INDEFINITE);
-        return timeline;
-    }
     @Override
     public boolean canPlay() {
         return true;
@@ -56,11 +34,18 @@ public abstract class AbstractSort implements Sort {
         for (int i = 0 ; i < BarsModel.NUM_OF_BARS; i++) {
             Bar bar = model.getElements().get(i);
             bar.setX(i * BarsModel.getWidthOfBar() + Bar.PADDING);
-            if(bar.isVisited()) bar.setFill(Color.LIGHTSEAGREEN);
+            bar.setFill(Color.BLACK);
+//            if(bar.isVisited()) bar.setFill(Color.LIGHTSEAGREEN);
             if(bar == currentBar) bar.setFill(Color.RED);
         }
     }
-
+    public void showResult() {
+//        for (int i = 0 ; i < BarsModel.NUM_OF_BARS; i++) {
+//            Bar bar = model.getElements().get(i);
+//            bar.setX(i * BarsModel.getWidthOfBar() + Bar.PADDING);
+//            bar.setFill(Color.NAVAJOWHITE);
+//        }
+    }
     public boolean isSort() {
         return true;
     }
@@ -69,11 +54,11 @@ public abstract class AbstractSort implements Sort {
         return false;
     }
 
-    public boolean isPathfind() {
+    public boolean isPathfinder() {
         return false;
     }
 
-    public Pathfind asPathfind() {
+    public Pathfinder asPathfinder() {
         return null;
     }
 

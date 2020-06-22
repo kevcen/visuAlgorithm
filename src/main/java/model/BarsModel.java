@@ -18,9 +18,9 @@ public class BarsModel implements VisualiserModel {
     }
 
     public BarsModel() {
-        for (int i = 0; i <NUM_OF_BARS; i++) {
+        for (int i = 1; i <= NUM_OF_BARS; i++) {
             Bar bar = new Bar(i);
-            elements.add(i, bar);
+            elements.add(i - 1, bar);
         }
     }
 

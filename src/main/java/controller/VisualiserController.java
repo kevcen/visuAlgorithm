@@ -1,14 +1,13 @@
 package controller;
 
 import algorithm.Algorithm;
-import algorithm.pathfind.AStar;
-import algorithm.pathfind.Dijkstra;
+import algorithm.pathfinder.AStar;
+import algorithm.pathfinder.Dijkstra;
 import algorithm.sort.BubbleSort;
 import algorithm.sort.InsertionSort;
 import algorithm.sort.MergeSort;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXScrollPane;
 import com.jfoenix.controls.JFXSlider;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
@@ -49,7 +48,7 @@ public class VisualiserController {
     private Timeline animation = new Timeline();
 
     private ObservableList<String> algorithmList = FXCollections.observableArrayList(
-            "A* Pathfind", "Dijkstra's Pathfind", "Bubble Sort", "Insertion Sort", "Merge Sort");
+            "A* Pathfinder", "Dijkstra's Pathfinder", "Bubble Sort", "Insertion Sort", "Merge Sort");
 
     @FXML
     public void initialize() {
@@ -93,7 +92,7 @@ public class VisualiserController {
 
         for (Vertex vertex : visModel.asBoardModel().getBoard()) {
             // Set on button click
-            currentAlgorithm.asPathfind().setVertexEventHandlers(vertex);
+            currentAlgorithm.asPathfinder().setVertexEventHandlers(vertex);
             // Set UI
             grid.add(vertex, vertex.getCol(), vertex.getRow());
         }
@@ -137,12 +136,12 @@ public class VisualiserController {
     @FXML
     public void changeAlgorithm(ActionEvent event) {
         switch(algorithmCombo.getValue()) {
-            case "A* Pathfind":
+            case "A* Pathfinder":
                 currentAlgorithm = new AStar();
                 initialiseBoard();
                 currentAlgorithm.setModel(visModel);
                 break;
-            case "Dijkstra's Pathfind":
+            case "Dijkstra's Pathfinder":
                 currentAlgorithm = new Dijkstra();
                 initialiseBoard();
                 currentAlgorithm.setModel(visModel);
