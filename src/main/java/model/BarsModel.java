@@ -8,17 +8,16 @@ import javafx.scene.shape.Rectangle;
 import java.util.Collections;
 
 public class BarsModel implements VisualiserModel {
-    public static final int NUM_OF_BARS = 500;
 
     //TODO: Refactor size of scene into constants
     private ObservableList<Bar> elements = FXCollections.observableArrayList();
 
-    public static double getWidthOfBar() {
-        return 900.0 / NUM_OF_BARS;
+    public static double getWidthOfBar(int numBars) {
+        return 900.0 / numBars;
     }
 
-    public BarsModel() {
-        for (int i = 1; i <= NUM_OF_BARS; i++) {
+    public void setBars(int numBars) {
+        for (int i = 1; i <= numBars; i++) {
             var bar = new Bar(i);
             elements.add(i - 1, bar);
         }
@@ -28,7 +27,9 @@ public class BarsModel implements VisualiserModel {
         return elements;
     }
 
-
+    public void randomiseBars() {
+        Collections.shuffle(elements);
+    }
 
     public boolean isBarsModel() {
         return true;

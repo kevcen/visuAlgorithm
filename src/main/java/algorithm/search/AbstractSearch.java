@@ -11,33 +11,43 @@ import java.util.Collections;
 public abstract class AbstractSearch extends AbstractAlgorithm implements Search {
     protected BarsModel model;
     protected Bar currentBar;
-    protected int searchValue = -1;
+    protected Bar searchBar = null;
 
     @Override
     public void setModel(VisualiserModel model) {
         this.model = model.asBarsModel();
+
+        for (Bar bar : model.asBarsModel().getElements()) {
+            bar.setHeightScale(2);
+            bar.setOnMouseClicked(e -> {
+                searchBar = bar;
+                visualise();
+            });
+        }
+
+
+        visualise();
     }
 
 
     @Override
     public boolean canPlay() {
-        return searchValue > 0 && searchValue <= BarsModel.NUM_OF_BARS;
+        return searchBar != null;
     }
 
-    public void randomiseBars() {
-        Collections.shuffle(model.getElements());
-        visualise();
-    }
+
 
     /**
      * Use the current state of the algorithm to visualise the current state
      */
     public void visualise() {
-        for (int i = 0 ; i < BarsModel.NUM_OF_BARS; i++) {
+        for (int i = 0 ; i < Search.NUM_OF_BARS; i++) {
             var bar = model.getElements().get(i);
-            bar.setX(i * BarsModel.getWidthOfBar() + Bar.PADDING);
+            bar.setWidth(BarsModel.getWidthOfBar(Search.NUM_OF_BARS));
+            bar.setX(i * BarsModel.getWidthOfBar(Search.NUM_OF_BARS) + Bar.PADDING);
+            bar.setFill(Color.BLACK);
             if(bar.isVisited()) bar.setFill(Color.LIGHTSEAGREEN);
-//            if(bar == searchBar) bar.setEnd();
+            if(bar == searchBar) bar.setEnd();
             if(bar == currentBar) bar.setFill(Color.RED);
         }
     }
@@ -54,7 +64,7 @@ public abstract class AbstractSearch extends AbstractAlgorithm implements Search
         return false;
     }
 
-    public Pathfinder asPathfind() {
+    public Pathfinder asPathfinder() {
         return null;
     }
 

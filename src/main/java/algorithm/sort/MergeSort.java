@@ -14,20 +14,20 @@ public class MergeSort extends AbstractSort {
 
     @Override
     public boolean hasNext() {
-        return size <= BarsModel.NUM_OF_BARS - 1;
+        return size <= Sort.NUM_OF_BARS - 1;
     }
 
     @Override
     public void doStep() {
 
-        var mid = Math.min(lower + size, BarsModel.NUM_OF_BARS);
-        var upper = Math.min(lower + 2 * size, BarsModel.NUM_OF_BARS);
+        var mid = Math.min(lower + size, Sort.NUM_OF_BARS);
+        var upper = Math.min(lower + 2 * size, Sort.NUM_OF_BARS);
 
         merge(lower, mid, upper);
 
         lower += 2 * size;
 
-        if (lower >= BarsModel.NUM_OF_BARS - 1) {
+        if (lower >= Sort.NUM_OF_BARS - 1) {
             size *= 2;
             lower = 0;
         }

@@ -3,10 +3,10 @@ package controller;
 import algorithm.Algorithm;
 import algorithm.pathfinder.AStar;
 import algorithm.pathfinder.Dijkstra;
-import algorithm.sort.BubbleSort;
-import algorithm.sort.InsertionSort;
-import algorithm.sort.MergeSort;
-import algorithm.sort.QuickSort;
+import algorithm.search.BinarySearch;
+import algorithm.search.LinearSearch;
+import algorithm.search.Search;
+import algorithm.sort.*;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXSlider;
@@ -49,7 +49,7 @@ public class VisualiserController {
     private Timeline animation = new Timeline();
 
     private ObservableList<String> algorithmList = FXCollections.observableArrayList(
-            "A* Pathfinder", "Dijkstra's Pathfinder", "Bubble Sort", "Insertion Sort", "Merge Sort", "Quick Sort");
+            "A* Pathfinder", "Dijkstra's Pathfinder", "Bubble Sort", "Insertion Sort", "Merge Sort", "Quick Sort", "Linear Search", "Binary Search");
 
     @FXML
     public void initialize() {
@@ -103,9 +103,9 @@ public class VisualiserController {
     }
 
 
-    private void initialiseBars() {
+    private void initialiseBars(int numBars) {
         visModel = new BarsModel();
-
+        visModel.asBarsModel().setBars(numBars);
         try {
             barsPane = FXMLLoader.load(getClass().getResource("../view/bars.fxml"));
         } catch (IOException e) {
@@ -149,28 +149,46 @@ public class VisualiserController {
                 break;
             case "Bubble Sort":
                 currentAlgorithm = new BubbleSort();
-                initialiseBars();
+                initialiseBars(Sort.NUM_OF_BARS);
                 currentAlgorithm.setModel(visModel);
-                currentAlgorithm.asSort().randomiseBars();
+                visModel.asBarsModel().randomiseBars();
+                currentAlgorithm.asSort().visualise();
                 break;
             case "Insertion Sort":
                 currentAlgorithm = new InsertionSort();
-                initialiseBars();
+                initialiseBars(Sort.NUM_OF_BARS);
                 currentAlgorithm.setModel(visModel);
-                currentAlgorithm.asSort().randomiseBars();
+                visModel.asBarsModel().randomiseBars();
+                currentAlgorithm.asSort().visualise();
                 break;
             case "Merge Sort":
                 currentAlgorithm = new MergeSort();
-                initialiseBars();
+                initialiseBars(Sort.NUM_OF_BARS);
                 currentAlgorithm.setModel(visModel);
-                currentAlgorithm.asSort().randomiseBars();
+                visModel.asBarsModel().randomiseBars();
+                currentAlgorithm.asSort().visualise();
                 break;
             case "Quick Sort":
                 currentAlgorithm = new QuickSort();
-                initialiseBars();
+                initialiseBars(Sort.NUM_OF_BARS);
                 currentAlgorithm.setModel(visModel);
-                currentAlgorithm.asSort().randomiseBars();
+                visModel.asBarsModel().randomiseBars();
+                currentAlgorithm.asSort().visualise();
                 break;
+            case "Linear Search":
+                currentAlgorithm = new LinearSearch();
+                initialiseBars(Search.NUM_OF_BARS);
+                currentAlgorithm.setModel(visModel);
+                visModel.asBarsModel().randomiseBars();
+                currentAlgorithm.asSearch().visualise();
+                break;
+            case "Binary Search":
+                currentAlgorithm = new BinarySearch();
+                initialiseBars(Search.NUM_OF_BARS);
+                currentAlgorithm.setModel(visModel);
+                currentAlgorithm.asSearch().visualise();
+                break;
+
 
         }
 

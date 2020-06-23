@@ -14,7 +14,7 @@ public class QuickSort extends AbstractSort {
     @Override
     public void initialiseStep() {
         stack.push(0);
-        stack.push(BarsModel.NUM_OF_BARS - 1);
+        stack.push(Sort.NUM_OF_BARS - 1);
     }
 
     @Override

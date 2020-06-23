@@ -17,7 +17,7 @@ public class InsertionSort extends AbstractSort {
 
     @Override
     public boolean hasNext() {
-        return index < BarsModel.NUM_OF_BARS;
+        return index < Sort.NUM_OF_BARS;
     }
 
     @Override

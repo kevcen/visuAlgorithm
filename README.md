@@ -5,7 +5,7 @@ Visualiser for the following algorithms:
 - Bubble Sort
 - Insertion Sort
 - Merge Sort
-- Quick Sort (not implemented)
+- Quick Sort
 - Linear Search (not implemented)
 - Binary Search (not implemented)
 
