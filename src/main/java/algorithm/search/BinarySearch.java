@@ -1,19 +1,14 @@
 package algorithm.search;
 
-import model.Bar;
-
 public class BinarySearch extends AbstractSearch {
     int lo = 0;
     int hi = NUM_OF_BARS;
     @Override
     public void initialiseStep() {
         currentBar = model.getElements().get(getMid());
+        currentBar.setVisited();
     }
 
-    @Override
-    public boolean hasNext() {
-        return currentBar != searchBar;
-    }
 
     @Override
     public void doStep() {
@@ -25,13 +20,11 @@ public class BinarySearch extends AbstractSearch {
             lo = currentBar.getValue() + 1;
         }
         currentBar = model.getElements().get(getMid());
+        currentBar.setVisited();
     }
 
     private int getMid() {
         return (hi + lo) / 2;
     }
-    @Override
-    public void showResult() {
 
-    }
 }

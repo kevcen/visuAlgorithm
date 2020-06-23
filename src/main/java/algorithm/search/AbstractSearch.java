@@ -4,9 +4,9 @@ import algorithm.AbstractAlgorithm;
 import algorithm.pathfinder.Pathfinder;
 import algorithm.sort.Sort;
 import javafx.scene.paint.Color;
-import model.*;
-
-import java.util.Collections;
+import model.Bar;
+import model.BarsModel;
+import model.VisualiserModel;
 
 public abstract class AbstractSearch extends AbstractAlgorithm implements Search {
     protected BarsModel model;
@@ -17,6 +17,7 @@ public abstract class AbstractSearch extends AbstractAlgorithm implements Search
     public void setModel(VisualiserModel model) {
         this.model = model.asBarsModel();
 
+        // Select search bar
         for (Bar bar : model.asBarsModel().getElements()) {
             bar.setHeightScale(2);
             bar.setOnMouseClicked(e -> {
@@ -24,27 +25,32 @@ public abstract class AbstractSearch extends AbstractAlgorithm implements Search
                 visualise();
             });
         }
-
-
-        visualise();
     }
 
+    @Override
+    public boolean hasNext() {
+        return currentBar != searchBar;
+    }
 
     @Override
     public boolean canPlay() {
         return searchBar != null;
     }
 
+    @Override
+    public void showResult() {
+        searchBar.setFill(Color.NAVAJOWHITE);
+    }
 
-
-    /**
-     * Use the current state of the algorithm to visualise the current state
-     */
     public void visualise() {
         for (int i = 0 ; i < Search.NUM_OF_BARS; i++) {
             var bar = model.getElements().get(i);
+            // Adjust the width (used in first time visualise)
             bar.setWidth(BarsModel.getWidthOfBar(Search.NUM_OF_BARS));
+            // Set the X coordinate of the bars (used when shuffled)
             bar.setX(i * BarsModel.getWidthOfBar(Search.NUM_OF_BARS) + Bar.PADDING);
+
+            // Set the colours
             bar.setFill(Color.BLACK);
             if(bar.isVisited()) bar.setFill(Color.LIGHTSEAGREEN);
             if(bar == searchBar) bar.setEnd();

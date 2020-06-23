@@ -11,6 +11,8 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXSlider;
 import javafx.animation.Timeline;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -120,7 +122,24 @@ public class VisualiserController {
         visualiserPane.getChildren().add(barsPane);
     }
 
+    private void initialisePathfinder() {
+        initialiseBoard();
+        currentAlgorithm.setModel(visModel);
+    }
 
+    private void initialiseSort() {
+        initialiseBars(Sort.NUM_OF_BARS);
+        currentAlgorithm.setModel(visModel);
+        visModel.asBarsModel().randomiseBars();
+        currentAlgorithm.asSort().visualise();
+    }
+
+    private void initialiseSearch(boolean shuffle) {
+        initialiseBars(Search.NUM_OF_BARS);
+        currentAlgorithm.setModel(visModel);
+        if (shuffle) visModel.asBarsModel().randomiseBars();
+        currentAlgorithm.asSearch().visualise();
+    }
 
     @FXML
     public void performAlgorithm(ActionEvent event) {
@@ -139,59 +158,39 @@ public class VisualiserController {
         switch(algorithmCombo.getValue()) {
             case "A* Pathfinder":
                 currentAlgorithm = new AStar();
-                initialiseBoard();
-                currentAlgorithm.setModel(visModel);
+                initialisePathfinder();
                 break;
             case "Dijkstra's Pathfinder":
                 currentAlgorithm = new Dijkstra();
-                initialiseBoard();
-                currentAlgorithm.setModel(visModel);
+                initialisePathfinder();
                 break;
             case "Bubble Sort":
                 currentAlgorithm = new BubbleSort();
-                initialiseBars(Sort.NUM_OF_BARS);
-                currentAlgorithm.setModel(visModel);
-                visModel.asBarsModel().randomiseBars();
-                currentAlgorithm.asSort().visualise();
+                initialiseSort();
                 break;
             case "Insertion Sort":
                 currentAlgorithm = new InsertionSort();
-                initialiseBars(Sort.NUM_OF_BARS);
-                currentAlgorithm.setModel(visModel);
-                visModel.asBarsModel().randomiseBars();
-                currentAlgorithm.asSort().visualise();
+                initialiseSort();
                 break;
             case "Merge Sort":
                 currentAlgorithm = new MergeSort();
-                initialiseBars(Sort.NUM_OF_BARS);
-                currentAlgorithm.setModel(visModel);
-                visModel.asBarsModel().randomiseBars();
-                currentAlgorithm.asSort().visualise();
+                initialiseSort();
                 break;
             case "Quick Sort":
                 currentAlgorithm = new QuickSort();
-                initialiseBars(Sort.NUM_OF_BARS);
-                currentAlgorithm.setModel(visModel);
-                visModel.asBarsModel().randomiseBars();
-                currentAlgorithm.asSort().visualise();
+                initialiseSort();
                 break;
             case "Linear Search":
                 currentAlgorithm = new LinearSearch();
-                initialiseBars(Search.NUM_OF_BARS);
-                currentAlgorithm.setModel(visModel);
-                visModel.asBarsModel().randomiseBars();
-                currentAlgorithm.asSearch().visualise();
+                initialiseSearch(true);
                 break;
             case "Binary Search":
                 currentAlgorithm = new BinarySearch();
-                initialiseBars(Search.NUM_OF_BARS);
-                currentAlgorithm.setModel(visModel);
-                currentAlgorithm.asSearch().visualise();
+                initialiseSearch(false);
                 break;
-
-
         }
-
+        currentAlgorithm.timePerFrameProperty().bind(timeSlider.valueProperty());
+        timeSlider.valueProperty().addListener((obs, ov, nv) -> currentAlgorithm.changeTime((double) nv));
     }
 
 

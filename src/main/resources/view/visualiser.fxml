@@ -11,7 +11,7 @@
          <children>
             <JFXButton fx:id="playBtn" layoutX="96.0" layoutY="58.0" onAction="#performAlgorithm" text="play" />
             <JFXComboBox fx:id="algorithmCombo" layoutX="29.0" layoutY="217.0" onAction="#changeAlgorithm" prefHeight="26.0" prefWidth="155.0" />
-            <JFXSlider fx:id="timeSlider" layoutX="43.0" layoutY="316.0" max="200.0" value="50.0" />
+            <JFXSlider fx:id="timeSlider" layoutX="43.0" layoutY="316.0" min="10.0" value="50.0" />
          </children></AnchorPane>
       <AnchorPane fx:id="visualiserPane" prefHeight="704.0" prefWidth="1012.0" />
    </children>

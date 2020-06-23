@@ -4,9 +4,9 @@ import algorithm.AbstractAlgorithm;
 import algorithm.pathfinder.Pathfinder;
 import algorithm.search.Search;
 import javafx.scene.paint.Color;
-import model.*;
-
-import java.util.Collections;
+import model.Bar;
+import model.BarsModel;
+import model.VisualiserModel;
 
 public abstract class AbstractSort extends AbstractAlgorithm implements Sort {
     protected BarsModel model;
@@ -22,10 +22,6 @@ public abstract class AbstractSort extends AbstractAlgorithm implements Sort {
         return true;
     }
 
-    public void randomiseBars() {
-        Collections.shuffle(model.getElements());
-        visualise();
-    }
 
     /**
      * Use the current state of the algorithm to visualise the current state

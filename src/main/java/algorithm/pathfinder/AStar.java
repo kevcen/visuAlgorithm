@@ -10,8 +10,10 @@ public class AStar extends AbstractPathfinder {
 
     @Override
     public void initialiseStep() {
+        // Process the heuristic
         processHeuristic();
-        // Initialise starting node and it's neighbours
+
+        // Initialise starting node and it's neighbours' values
         startVertex.setGValue(0);
         fValues.put(startVertex, startVertex.gValue() + startVertex.hValue());
         for (Vertex neighbour : startVertex.getNeighbours()) {
@@ -36,12 +38,10 @@ public class AStar extends AbstractPathfinder {
         // Get the fringe node with smallest f value
         Vertex currentVertex = visitSmallestVertex(fValues);
 
+        // Update the values of the neighbours
         updateNeighbours(currentVertex, fValues);
     }
 
-    /**
-     * Calculates euclidean distance from current vertex to end vertex for heuristic
-     */
     public void processHeuristic() {
         for (Vertex vertex : model.getBoard()) {
             double xDistance = Math.abs(vertex.getCol() - endVertex.getCol());
