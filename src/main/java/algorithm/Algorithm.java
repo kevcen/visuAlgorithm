@@ -4,6 +4,7 @@ import algorithm.pathfinder.Pathfinder;
 import algorithm.search.Search;
 import algorithm.sort.Sort;
 import javafx.animation.Timeline;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import model.VisualiserModel;
 
@@ -11,7 +12,7 @@ import model.VisualiserModel;
 public interface Algorithm {
     double DEFAULT_TIME_PER_FRAME = 5;
     void setModel(VisualiserModel model);
-    Timeline getAnimation();
+    Timeline getAnimation(BooleanProperty finished);
     boolean canPlay();
     boolean isSort();
     boolean isSearch();
@@ -25,5 +26,5 @@ public interface Algorithm {
     void visualise();
     void showResult();
     DoubleProperty timePerFrameProperty();
-    void changeTime(double time);
+    Timeline changeTime(boolean playing);
 }

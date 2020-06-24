@@ -1,0 +1,23 @@
+.jfx-combo-box {
+    -jfx-focus-color: transparent;
+    -jfx-unfocus-color: transparent;
+    -fx-prompt-text-fill: transparent;
+}
+
+.combo-box-popup .list-view .list-cell:filled:hover
+{
+    -fx-background-color: navajowhite;
+    -fx-text-fill: #3d3d3d;
+}
+
+.combo-box .list-cell,
+.combo-box .list-view,
+.combo-box-popup .list-view .list-cell
+{
+    /* No alternate highlighting */
+    -fx-background: #3d3d3d;
+    -fx-background-color: #3d3d3d;
+    -fx-text-fill: white;
+    -fx-alignment: center;
+    -fx-font: 15px "Caviar Dreams";
+}

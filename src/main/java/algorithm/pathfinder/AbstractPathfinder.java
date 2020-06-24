@@ -3,9 +3,12 @@ package algorithm.pathfinder;
 import algorithm.AbstractAlgorithm;
 import algorithm.search.Search;
 import algorithm.sort.Sort;
+import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
+import javafx.scene.control.Label;
+import javafx.scene.text.Text;
 import model.BoardModel;
 import model.Vertex;
 import model.VisualiserModel;
@@ -13,8 +16,7 @@ import model.VisualiserModel;
 public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pathfinder {
     private ObservableList<Vertex> fringe = FXCollections.observableArrayList();
     protected BoardModel model;
-    protected Vertex startVertex = null, endVertex = null;
-
+    protected Vertex startVertex = null, endVertex = null, currentVertex = null;
 
     public void setModel(VisualiserModel model) {
         this.model = (BoardModel) model;
@@ -31,6 +33,10 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
         assert(start != null && end != null);
         startVertex = start;
         endVertex = end;
+    }
+
+    public boolean isEndOrStart(Vertex vertex) {
+        return vertex == startVertex || vertex == endVertex;
     }
 
     /**
@@ -55,20 +61,20 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
      */
     public void visualise() {
         for (Vertex vertex : model.getBoard()) {
-            StringBuilder style = new StringBuilder();
-            style.append("-fx-background-color: ");
-            if (vertex.isWall())
-                style.append("black;");
-            else if (vertex == endVertex || vertex == startVertex)
-                continue;
-            else if (vertex.isVisited())
-                style.append("lightseagreen;");
-            else if (fringe.contains(vertex))
-                style.append("powderblue;");
-            else
-                style.append("white;");
-            style.append(Vertex.styles);
-            vertex.setStyle(style.toString());
+            if (vertex == currentVertex)
+                vertex.setCurrent();
+            else {
+                if (vertex.isWall())
+                    vertex.setWall(true);
+                else if (vertex == endVertex || vertex == startVertex)
+                    vertex.setEnd();
+                else if (vertex.isVisited())
+                    vertex.setVisited(true);
+                else if (fringe.contains(vertex))
+                    vertex.setFringe();
+                else
+                    vertex.resetStyle();
+            }
         }
     }
 
@@ -80,11 +86,12 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
             System.out.println("No path available");
             return;
         }
-        var currentVertex = endVertex.getParentVertex();
-        while (currentVertex != startVertex) {
-            currentVertex.setStyle("-fx-background-color: navajowhite;" + Vertex.styles);
-            currentVertex = currentVertex.getParentVertex();
+        var vertex = endVertex.getParentVertex();
+        while (vertex != startVertex) {
+            vertex.setResult();
+            vertex = vertex.getParentVertex();
         }
+        endVertex.setEnd();
     }
 
 
@@ -171,9 +178,13 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
     }
 
     @Override
-    public void setVertexEventHandlers(Vertex vertex) {
+    public void setVertexEventHandlers(Vertex vertex, BooleanProperty playing, Text statusText) {
         // Clicked, change state of vertices
         vertex.setOnMouseClicked(e -> {
+            if (playing.get()) {
+                return;
+//                System.out.println("hi");
+            }
             if (startVertex == vertex) {
                 vertex.resetStyle();
                 startVertex = null;
@@ -188,6 +199,13 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
                 endVertex = vertex;
             }
             setVertices(startVertex, endVertex);
+
+            if(!startIsSet())
+                statusText.setText("Select starting point");
+            else if(!endIsSet())
+                statusText.setText("Select end point");
+            else if (!playing.get())
+                statusText.setText("Press play");
         });
     }
 

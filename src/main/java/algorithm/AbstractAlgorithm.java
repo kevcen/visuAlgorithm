@@ -3,6 +3,7 @@ package algorithm;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
@@ -12,6 +13,7 @@ import javafx.util.Duration;
 public abstract class AbstractAlgorithm implements Algorithm {
     private DoubleProperty timePerFrame = new SimpleDoubleProperty(DEFAULT_TIME_PER_FRAME);
     private Timeline timeline;
+    private BooleanProperty finished;
     private EventHandler<ActionEvent> animationHandler = e -> {
         if (hasNext()) {
             doStep();
@@ -19,13 +21,14 @@ public abstract class AbstractAlgorithm implements Algorithm {
         } else {
             timeline.stop();
             showResult();
+            finished.set(true);
         }
     };
 
     @Override
-    public Timeline getAnimation() {
+    public Timeline getAnimation(BooleanProperty finished) {
+        this.finished = finished;
         timeline = new Timeline();
-//        var animationHandler =
 
         var kf = new KeyFrame(Duration.millis(timePerFrame.get()), animationHandler);
 
@@ -42,14 +45,14 @@ public abstract class AbstractAlgorithm implements Algorithm {
     }
 
     @Override
-    public void changeTime(double time) {
+    public Timeline changeTime(boolean playing) {
         if(timeline == null)
-            return;
+            return null;
         timeline.stop();
         var kf = new KeyFrame(
-                Duration.millis(time), //TODO: Use slider for time
-                animationHandler);
+                Duration.millis(timePerFrame.get()), animationHandler);
         timeline.getKeyFrames().setAll(kf);
-        timeline.play();
+        if(playing) timeline.play();
+        return timeline;
     }
 }

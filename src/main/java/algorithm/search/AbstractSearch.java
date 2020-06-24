@@ -3,7 +3,9 @@ package algorithm.search;
 import algorithm.AbstractAlgorithm;
 import algorithm.pathfinder.Pathfinder;
 import algorithm.sort.Sort;
+import javafx.beans.property.BooleanProperty;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import model.Bar;
 import model.BarsModel;
 import model.VisualiserModel;
@@ -16,17 +18,20 @@ public abstract class AbstractSearch extends AbstractAlgorithm implements Search
     @Override
     public void setModel(VisualiserModel model) {
         this.model = model.asBarsModel();
-
-        // Select search bar
-        for (Bar bar : model.asBarsModel().getElements()) {
-            bar.setHeightScale(2);
-            bar.setOnMouseClicked(e -> {
-                searchBar = bar;
-                visualise();
-            });
-        }
     }
 
+    public void setBarEventHandlers(Bar bar, BooleanProperty playing, Text statusText) {
+        // Select search bar
+        bar.setHeightScale(2);
+        bar.setOnMouseClicked(e -> {
+            if(playing.get()) return;
+
+            statusText.setText("Press play");
+            searchBar = bar;
+            visualise();
+        });
+
+    }
     @Override
     public boolean hasNext() {
         return currentBar != searchBar;
@@ -51,10 +56,10 @@ public abstract class AbstractSearch extends AbstractAlgorithm implements Search
             bar.setX(i * BarsModel.getWidthOfBar(Search.NUM_OF_BARS) + Bar.PADDING);
 
             // Set the colours
-            bar.setFill(Color.BLACK);
-            if(bar.isVisited()) bar.setFill(Color.LIGHTSEAGREEN);
+            bar.resetStyle();
+            if (bar.isVisited()) bar.setVisited();
             if(bar == searchBar) bar.setEnd();
-            if(bar == currentBar) bar.setFill(Color.RED);
+            if (bar == currentBar) bar.setCurrent();
         }
     }
 

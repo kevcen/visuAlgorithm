@@ -14,7 +14,7 @@ public class Bar extends Rectangle implements Comparable<Bar> {
         super();
         setValue(value);
 //        setWidth(BarsModel.getWidthOfBar());
-        setFill(Color.BLACK);
+        resetStyle();
     }
 
     public int getValue() {
@@ -41,10 +41,23 @@ public class Bar extends Rectangle implements Comparable<Bar> {
 
     public void setVisited() {
         visited = true;
+        setFill(Color.valueOf("#7bd1ce"));
     }
 
     public void setEnd() {
-        setFill(Color.MIDNIGHTBLUE);
+        setFill(Color.valueOf("#ff9012"));
+    }
+
+    public void resetStyle() {
+        setFill(Color.WHITE);
+    }
+
+    public void setCurrent() {
+        setFill(Color.RED);
+    }
+
+    public void setResult() {
+        setFill(Color.NAVAJOWHITE);
     }
 
     @Override

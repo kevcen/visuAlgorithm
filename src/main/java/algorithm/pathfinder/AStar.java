@@ -36,7 +36,7 @@ public class AStar extends AbstractPathfinder {
         assert (!endVertex.isVisited() && !getFringe().isEmpty());
 
         // Get the fringe node with smallest f value
-        Vertex currentVertex = visitSmallestVertex(fValues);
+        currentVertex = visitSmallestVertex(fValues);
 
         // Update the values of the neighbours
         updateNeighbours(currentVertex, fValues);

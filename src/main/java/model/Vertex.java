@@ -6,7 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 
 public class Vertex extends JFXButton {
-    public static final String styles = "-fx-background-radius: 0; -fx-border-color: black; -fx-border-width: 0.1";
+    public static final String styles = "-fx-background-radius: 0; -fx-border-color: white; -fx-border-width: 0.1";
     private final int row, col;
     private double hValue = 0, gValue = Integer.MAX_VALUE;
 
@@ -23,7 +23,7 @@ public class Vertex extends JFXButton {
         this.col = col;
         neighbours = FXCollections.observableArrayList();
         setMinSize(0, 0);
-        setStyle("-fx-background-color: white;" + styles);
+        resetStyle();
     }
 
     public ObservableList<Vertex> getNeighbours() {
@@ -43,6 +43,8 @@ public class Vertex extends JFXButton {
     }
     public void setVisited(boolean visited) {
         this.visited = visited;
+        if (visited)
+            setStyle("-fx-background-color: #7bd1ce;" + styles);
     }
 
     public double hValue() {
@@ -73,7 +75,7 @@ public class Vertex extends JFXButton {
 
     public void setWall(boolean wall) {
         if(wall) {
-            setStyle(styles + ";-fx-background-color: black");
+            setStyle(styles + ";-fx-background-color: white");
         } else {
             resetStyle();
         }
@@ -81,14 +83,26 @@ public class Vertex extends JFXButton {
     }
 
     public void resetStyle() {
-        setStyle(styles + ";-fx-background-color: white");
+        setStyle(styles + ";-fx-background-color: #3d3d3d");
     }
 
     public void setStart() {
-        setStyle("-fx-background-color: mediumslateblue");
+        setStyle("-fx-background-color: #ff9012;" + styles);
     }
 
     public void setEnd() {
-        setStyle("-fx-background-color: midnightblue");
+        setStyle("-fx-background-color: #ff9012;" + styles);
+    }
+
+    public void setCurrent() {
+        setStyle("-fx-background-color: red;" + styles);
+    }
+
+    public void setFringe() {
+        setStyle("-fx-background-color: powderblue;" + styles);
+    }
+
+    public void setResult() {
+        setStyle("-fx-background-color: navajowhite;" + Vertex.styles);
     }
 }
