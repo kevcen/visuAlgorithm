@@ -15,6 +15,10 @@ public abstract class AbstractSearch extends AbstractAlgorithm implements Search
     protected Bar currentBar;
     protected Bar searchBar = null;
 
+    public Bar getSearchBar() {
+        return searchBar;
+    }
+
     @Override
     public void setModel(VisualiserModel model) {
         this.model = model.asBarsModel();
@@ -26,7 +30,7 @@ public abstract class AbstractSearch extends AbstractAlgorithm implements Search
         bar.setOnMouseClicked(e -> {
             if(playing.get()) return;
 
-            statusText.setText("Press play");
+            statusText.setText("Press play to start");
             searchBar = bar;
             visualise();
         });

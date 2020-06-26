@@ -181,9 +181,8 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
     public void setVertexEventHandlers(Vertex vertex, BooleanProperty playing, Text statusText) {
         // Clicked, change state of vertices
         vertex.setOnMouseClicked(e -> {
-            if (playing.get()) {
+            if (playing.get() || vertex.isWall()) {
                 return;
-//                System.out.println("hi");
             }
             if (startVertex == vertex) {
                 vertex.resetStyle();
@@ -205,7 +204,7 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
             else if(!endIsSet())
                 statusText.setText("Select end point");
             else if (!playing.get())
-                statusText.setText("Press play");
+                statusText.setText("Press play to start");
         });
     }
 

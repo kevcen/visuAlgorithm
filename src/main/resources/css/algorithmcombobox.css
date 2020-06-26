@@ -17,7 +17,17 @@
     /* No alternate highlighting */
     -fx-background: #3d3d3d;
     -fx-background-color: #3d3d3d;
-    -fx-text-fill: white;
+    -fx-text-fill: #bbbbbb;
     -fx-alignment: center;
-    -fx-font: 15px "Caviar Dreams";
 }
+
+/*.jfx-combo-box .label*/
+/*{*/
+/*    -fx-font: 15px "Caviar Dreams";*/
+/*}*/
+
+/*.jfx-combo-box .cell {*/
+/*    -fx-font: 15px "Caviar Dreams";*/
+/*    -fx-text-fill: white; !* change selected text (item) color *!*/
+/*    -fx-background-color: #3d3d3d; !* change background color *!*/
+/*}*/

@@ -2,12 +2,14 @@ package controller;
 
 import algorithm.Algorithm;
 import algorithm.pathfinder.AStar;
+import algorithm.pathfinder.DFS;
 import algorithm.pathfinder.Dijkstra;
 import algorithm.search.BinarySearch;
 import algorithm.search.LinearSearch;
 import algorithm.search.Search;
 import algorithm.sort.*;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXSlider;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -21,6 +23,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -44,7 +47,7 @@ public class VisualiserController {
     @FXML
     JFXButton playBtn;
     @FXML
-    ComboBox<String> algorithmCombo;
+    JFXComboBox<String> algorithmCombo;
     @FXML
     JFXSlider timeSlider;
     @FXML
@@ -62,25 +65,37 @@ public class VisualiserController {
     private BooleanProperty finished = new SimpleBooleanProperty(false);
     private boolean firstPlay = true;
     private ObservableList<String> algorithmList = FXCollections.observableArrayList(
-            "A* Pathfinder", "Dijkstra's Pathfinder", "Bubble Sort", "Insertion Sort", "Merge Sort", "Quick Sort", "Linear Search", "Binary Search");
+            "A* Pathfinder", "Dijkstra's Pathfinder", "Depth First Search", "Bubble Sort", "Insertion Sort", "Merge Sort", "Quick Sort", "Linear Search", "Binary Search");
 
     @FXML
     public void initialize() {
 
         // Set the values of the algorithm combo box
+//        ObservableList<Text> algorithmLabels = FXCollections.observableArrayList();
+//        for (String algorithmName : algorithmList) {
+//            algorithmLabels.add(new Text(algorithmName));
+//        }
         algorithmCombo.setItems(algorithmList);
         algorithmCombo.setValue(algorithmList.get(0));
         changeAlgorithm(); // Initialise the UI to the first algorithm
         playing.addListener((obs, ov, nv) -> {
             if(nv) {
                 playIcon.setIconLiteral("mdi-pause");
+                statusText.setText("Playing");
             } else {
                 playIcon.setIconLiteral("mdi-play");
+                if(!firstPlay)statusText.setText("Paused");
             }
         });
         finished.addListener((obs, ov, nv) -> {
             if(nv) {
                 playIcon.setIconLiteral("mdi-repeat");
+                if (currentAlgorithm.isSort())
+                    statusText.setText("Done: sorted!");
+                else if (currentAlgorithm.isSearch())
+                    statusText.setText("Done: bar " + currentAlgorithm.asSearch().getSearchBar().getValue() + " found!");
+                else
+                    statusText.setText("Done: path found!");
             }
         });
     }
@@ -169,7 +184,7 @@ public class VisualiserController {
         currentAlgorithm.setModel(visModel);
         visModel.asBarsModel().randomiseBars();
         currentAlgorithm.asSort().visualise();
-        statusText.setText("Press play");
+        statusText.setText("Press play to start");
     }
 
     private void initialiseSearch(boolean shuffle) {
@@ -193,7 +208,7 @@ public class VisualiserController {
             animation.play();
             playing.set(true);
         }else {
-
+            firstPlay = false;
             playing.set(true);
             currentAlgorithm.initialiseStep();
 
@@ -210,6 +225,7 @@ public class VisualiserController {
         statusText.setText("Loading");
         finished.set(false);
         playing.set(false);
+        firstPlay = true;
 
         switch (algorithmCombo.getValue()) {
             case "A* Pathfinder":
@@ -243,6 +259,10 @@ public class VisualiserController {
             case "Binary Search":
                 currentAlgorithm = new BinarySearch();
                 initialiseSearch(false);
+                break;
+            case "Depth First Search":
+                currentAlgorithm = new DFS();
+                initialisePathfinder();
                 break;
             default:
                 System.out.println("Unsupported algorithm");
