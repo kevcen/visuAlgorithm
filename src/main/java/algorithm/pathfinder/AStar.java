@@ -14,15 +14,15 @@ public class AStar extends AbstractPathfinder {
         processHeuristic();
 
         // Initialise starting node and it's neighbours' values
-        startVertex.setGValue(0);
-        fValues.put(startVertex, startVertex.gValue() + startVertex.hValue());
-        for (Vertex neighbour : startVertex.getNeighbours()) {
+        startVertexProperty().get().setGValue(0);
+        fValues.put(startVertexProperty().get(), startVertexProperty().get().gValue() + startVertexProperty().get().hValue());
+        for (Vertex neighbour : startVertexProperty().get().getNeighbours()) {
             if (neighbour.isWall())
                 continue;
             getFringe().add(neighbour);
-            neighbour.setParentVertex(startVertex);
+            neighbour.setParentVertex(startVertexProperty().get());
 
-            if (neighbour.getRow() == startVertex.getRow() || neighbour.getCol() == startVertex.getCol())
+            if (neighbour.getRow() == startVertexProperty().get().getRow() || neighbour.getCol() == startVertexProperty().get().getCol())
                 neighbour.setGValue(NON_DIAG_COST);
             else
                 neighbour.setGValue(DIAG_COST);
@@ -33,19 +33,19 @@ public class AStar extends AbstractPathfinder {
 
     @Override
     public void doStep() {
-        assert (!endVertex.isVisited() && !getFringe().isEmpty());
+        assert (!endVertexProperty().get().isVisited() && !getFringe().isEmpty());
 
         // Get the fringe node with smallest f value
-        currentVertex = visitSmallestVertex(fValues);
+        currentVertexProperty().set(visitSmallestVertex(fValues));
 
         // Update the values of the neighbours
-        updateNeighbours(currentVertex, fValues);
+        updateNeighbours(currentVertexProperty().get(), fValues);
     }
 
     public void processHeuristic() {
-        for (Vertex vertex : model.getBoard()) {
-            double xDistance = Math.abs(vertex.getCol() - endVertex.getCol());
-            double yDistance = Math.abs(vertex.getRow() - endVertex.getRow());
+        for (Vertex vertex : getModel().getBoard()) {
+            double xDistance = Math.abs(vertex.getCol() - endVertexProperty().get().getCol());
+            double yDistance = Math.abs(vertex.getRow() - endVertexProperty().get().getRow());
 
             vertex.setHValue(Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2)));
         }

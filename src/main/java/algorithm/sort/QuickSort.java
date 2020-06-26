@@ -3,13 +3,10 @@ package algorithm.sort;
 import model.Bar;
 import model.BarsModel;
 
-import java.util.Collections;
-import java.util.Deque;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class QuickSort extends AbstractSort {
-    Stack<Integer> stack = new Stack<>();
+    Deque<Integer> stack = new ArrayDeque<>();
 
     @Override
     public void initialiseStep() {

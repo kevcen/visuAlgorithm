@@ -11,19 +11,19 @@ public class Dijkstra extends AbstractPathfinder {
     @Override
     public void doStep() {
         // Get the fringe node with smallest distance
-        currentVertex = visitSmallestVertex(distances);
+        currentVertexProperty().set(visitSmallestVertex(distances));
 
-        updateNeighbours(currentVertex, distances);
+        updateNeighbours(currentVertexProperty().get(), distances);
     }
 
     @Override
     public void initialiseStep() {
-        startVertex.setVisited(true);
-        for (Vertex neighbour : startVertex.getNeighbours()) {
+        startVertexProperty().get().setVisited(true);
+        for (Vertex neighbour : startVertexProperty().get().getNeighbours()) {
             getFringe().add(neighbour);
-            neighbour.setParentVertex(startVertex);
+            neighbour.setParentVertex(startVertexProperty().get());
 
-            if (neighbour.getRow() == startVertex.getRow() || neighbour.getCol() == startVertex.getCol())
+            if (neighbour.getRow() == startVertexProperty().get().getRow() || neighbour.getCol() == startVertexProperty().get().getCol())
                 neighbour.setGValue(NON_DIAG_COST);
             else
                 neighbour.setGValue(DIAG_COST);

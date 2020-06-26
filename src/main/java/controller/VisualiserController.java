@@ -106,8 +106,12 @@ public class VisualiserController {
 
         // Walls for pathfinders
         scene.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.X) {
-                Platform.exit();
+            switch (e.getCode()) {
+                case X:
+                    Platform.exit();
+                case M:
+                    if (currentAlgorithm.isPathfinder())
+                        currentAlgorithm.asPathfinder().generateMaze();
             }
             pressedKeys.add(e.getCode());
         });
@@ -133,6 +137,7 @@ public class VisualiserController {
     private void initialiseBoard() {
         visModel = new BoardModel();
 
+        // Initialise UI
         try {
             grid = FXMLLoader.load(getClass().getResource("../view/board.fxml"));
         } catch (IOException e) {
@@ -145,7 +150,7 @@ public class VisualiserController {
 
         for (Vertex vertex : visModel.asBoardModel().getBoard()) {
             // Set on button click
-            currentAlgorithm.asPathfinder().setVertexEventHandlers(vertex, playing, statusText);
+            currentAlgorithm.asPathfinder().setVertexEventHandlers(vertex, firstPlay, statusText);
             // Set UI
             grid.add(vertex, vertex.getCol(), vertex.getRow());
         }
@@ -157,6 +162,8 @@ public class VisualiserController {
     private void initialiseBars(int numBars) {
         visModel = new BarsModel();
         visModel.asBarsModel().setBars(numBars);
+
+        // Initialise UI
         try {
             barsPane = FXMLLoader.load(getClass().getResource("../view/bars.fxml"));
         } catch (IOException e) {
@@ -176,7 +183,11 @@ public class VisualiserController {
     private void initialisePathfinder() {
         initialiseBoard();
         currentAlgorithm.setModel(visModel);
-        statusText.setText("Select starting point");
+        if (currentAlgorithm instanceof DFS) {
+            statusText.setText("Press 'm' to create a maze");
+        } else {
+            statusText.setText("Select starting point");
+        }
     }
 
     private void initialiseSort() {

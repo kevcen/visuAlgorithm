@@ -30,6 +30,8 @@ public class Vertex extends JFXButton {
         return neighbours;
     }
 
+
+
     public int getRow() {
         return row;
     }

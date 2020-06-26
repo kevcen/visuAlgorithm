@@ -18,6 +18,10 @@ dependencies {
     compile group: 'com.jfoenix', name: 'jfoenix', version: '9.0.8'
     compile 'org.kordamp.ikonli:ikonli-javafx:11.5.0'
     compile 'org.kordamp.ikonli:ikonli-materialdesign-pack:11.5.0'
+
+    testCompile "org.testfx:testfx-core:4.0.15-alpha"
+    testCompile "org.testfx:testfx-junit:4.0.15-alpha"
+    testCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.1'
 }
 
 javafx {

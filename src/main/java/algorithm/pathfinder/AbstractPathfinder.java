@@ -1,13 +1,17 @@
 package algorithm.pathfinder;
 
 import algorithm.AbstractAlgorithm;
+import algorithm.mazegenerator.MazeGenerator;
+import algorithm.mazegenerator.RandomisedPrim;
 import algorithm.search.Search;
 import algorithm.sort.Sort;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
-import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 import model.BoardModel;
 import model.Vertex;
@@ -15,13 +19,55 @@ import model.VisualiserModel;
 
 public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pathfinder {
     private ObservableList<Vertex> fringe = FXCollections.observableArrayList();
-    protected BoardModel model;
-    protected Vertex startVertex = null, endVertex = null, currentVertex = null;
+    private BoardModel model;
+    private ObjectProperty<Vertex> startVertex = new SimpleObjectProperty<>(),
+            endVertex = new SimpleObjectProperty<>(),
+            currentVertex = new SimpleObjectProperty<>();
+    private BooleanProperty startSetProperty = new SimpleBooleanProperty(false),
+            endSetProperty = new SimpleBooleanProperty(false),
+            mazeGeneratedProperty = new SimpleBooleanProperty(false);
+
+    public AbstractPathfinder() {
+        startVertex.addListener((obs, ov, nv) -> {
+            if (nv != null) {
+                startSetProperty.set(true);
+            } else {
+                startSetProperty.set(false);
+            }
+        });
+
+        endVertex.addListener((obs, ov, nv) -> {
+            if (nv != null) {
+                endSetProperty.set(true);
+            } else {
+                endSetProperty.set(false);
+            }
+        });
+
+
+    }
 
     public void setModel(VisualiserModel model) {
         this.model = (BoardModel) model;
     }
 
+    public BooleanProperty mazeGeneratedProperty() {
+        return mazeGeneratedProperty;
+    }
+
+    public void generateMaze() {
+        startVertex.set(null);
+        endVertex.set(null);
+
+        mazeGeneratedProperty.set(true);
+        MazeGenerator mazeGenerator = new RandomisedPrim();
+
+        mazeGenerator.setModel(model);
+
+        mazeGenerator.generateMaze();
+
+        visualise();
+    }
 
     /**
      * Sets the start and end vertices respectively
@@ -31,12 +77,12 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
     @Override
     public void setVertices(Vertex start, Vertex end) {
         assert(start != null && end != null);
-        startVertex = start;
-        endVertex = end;
+        startVertex.setValue(start);
+        endVertex.setValue(end);
     }
 
     public boolean isEndOrStart(Vertex vertex) {
-        return vertex == startVertex || vertex == endVertex;
+        return vertex.equals(startVertex.get()) || vertex.equals(endVertex.get());
     }
 
     /**
@@ -52,7 +98,7 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
      */
     @Override
     public boolean hasNext() {
-        return !endVertex.isVisited() && !getFringe().isEmpty();
+        return !endVertex.get().isVisited() && !getFringe().isEmpty();
     }
 
 
@@ -61,12 +107,12 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
      */
     public void visualise() {
         for (Vertex vertex : model.getBoard()) {
-            if (vertex == currentVertex)
+            if (vertex.equals(currentVertex.get()))
                 vertex.setCurrent();
             else {
                 if (vertex.isWall())
                     vertex.setWall(true);
-                else if (vertex == endVertex || vertex == startVertex)
+                else if (isEndOrStart(vertex))
                     vertex.setEnd();
                 else if (vertex.isVisited())
                     vertex.setVisited(true);
@@ -82,16 +128,16 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
      * Visualise the final path
      */
     public void showResult() {
-        if (!endVertex.isVisited()) {
+        if (!endVertex.get().isVisited()) {
             System.out.println("No path available");
             return;
         }
-        var vertex = endVertex.getParentVertex();
-        while (vertex != startVertex) {
+        var vertex = endVertex.get().getParentVertex();
+        while (vertex != startVertex.get()) {
             vertex.setResult();
             vertex = vertex.getParentVertex();
         }
-        endVertex.setEnd();
+        endVertex.get().setEnd();
     }
 
 
@@ -145,12 +191,21 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
         }
     }
 
-    public Vertex getStartVertex() {
+
+    public ObjectProperty<Vertex> startVertexProperty() {
         return startVertex;
     }
 
-    public Vertex getEndVertex() {
+    public BoardModel getModel() {
+        return model;
+    }
+
+    public ObjectProperty<Vertex> endVertexProperty() {
         return endVertex;
+    }
+
+    public ObjectProperty<Vertex> currentVertexProperty() {
+        return currentVertex;
     }
 
     public boolean isSort() {
@@ -178,47 +233,70 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
     }
 
     @Override
-    public void setVertexEventHandlers(Vertex vertex, BooleanProperty playing, Text statusText) {
+    public void setVertexEventHandlers(Vertex vertex, boolean played, Text statusText) {
         // Clicked, change state of vertices
         vertex.setOnMouseClicked(e -> {
-            if (playing.get() || vertex.isWall()) {
+            if (!played || vertex.isWall()) {
                 return;
             }
-            if (startVertex == vertex) {
+            if (startVertex.get() == vertex) {
                 vertex.resetStyle();
-                startVertex = null;
-            } else if (endVertex == vertex) {
+                startVertex.set(null);
+            } else if (endVertex.get() == vertex) {
                 vertex.resetStyle();
-                endVertex = null;
+                endVertex.set(null);
             } else if (!startIsSet()) {
                 vertex.setStart();
-                startVertex = vertex;
+                startVertex.set(vertex);
             } else if (!endIsSet()) {
                 vertex.setEnd();
-                endVertex = vertex;
+                endVertex.set(vertex);
             }
-            setVertices(startVertex, endVertex);
+            setVertices(startVertex.get(), endVertex.get());
 
-            if(!startIsSet())
+        });
+
+        startSetProperty.addListener((obs, ov, nv) -> {
+//            System.out.println("start nv: " + nv);
+            if (!nv)
                 statusText.setText("Select starting point");
-            else if(!endIsSet())
+            else
                 statusText.setText("Select end point");
-            else if (!playing.get())
+
+        });
+
+        endSetProperty.addListener((obs, ov, nv) -> {
+//            System.out.println("end nv: " + nv);
+            if (!startIsSet())
+                statusText.setText("Select starting point");
+            else if (!nv)
+                statusText.setText("Select end point");
+            else
                 statusText.setText("Press play to start");
+        });
+
+
+        mazeGeneratedProperty.addListener((obs, ov, nv) -> {
+            if (nv)
+                statusText.setText("Select starting point");
         });
     }
 
-    private boolean startIsSet() {
-        return startVertex != null;
+    @Override
+    public boolean isGraphTraversal() {
+        return false;
     }
 
-    private boolean endIsSet() {
-        return endVertex != null;
+    public boolean startIsSet() {
+        return startVertex.get() != null;
+    }
+
+    public boolean endIsSet() {
+        return endVertex.get() != null;
     }
 
     public boolean canPlay() {
         return startIsSet() && endIsSet();
-
     }
 
 
