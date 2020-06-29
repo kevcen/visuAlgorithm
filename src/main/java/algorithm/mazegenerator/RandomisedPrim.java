@@ -4,16 +4,12 @@ import algorithm.AbstractAlgorithm;
 import algorithm.pathfinder.Pathfinder;
 import algorithm.search.Search;
 import algorithm.sort.Sort;
-import javafx.animation.Timeline;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.BoardModel;
 import model.Vertex;
 import model.VisualiserModel;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 

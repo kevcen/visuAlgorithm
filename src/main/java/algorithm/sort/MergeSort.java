@@ -1,7 +1,5 @@
 package algorithm.sort;
 
-import model.BarsModel;
-
 
 public class MergeSort extends AbstractSort {
     private int size = 1;

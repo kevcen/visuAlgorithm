@@ -1,10 +1,6 @@
 package algorithm.sort;
 
-import model.Bar;
-import model.BarsModel;
-
 import java.util.Collections;
-import java.util.List;
 
 public class BubbleSort extends AbstractSort {
     boolean sorted = false;

@@ -4,7 +4,6 @@ import algorithm.AbstractAlgorithm;
 import algorithm.mazegenerator.MazeGenerator;
 import algorithm.pathfinder.Pathfinder;
 import algorithm.search.Search;
-import javafx.scene.paint.Color;
 import model.Bar;
 import model.BarsModel;
 import model.VisualiserModel;

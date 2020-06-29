@@ -3,7 +3,6 @@ package model;
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Button;
 
 public class Vertex extends JFXButton {
     public static final String styles = "-fx-background-radius: 0; -fx-border-color: white; -fx-border-width: 0.1";

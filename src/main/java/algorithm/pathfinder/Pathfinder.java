@@ -1,8 +1,6 @@
 package algorithm.pathfinder;
 
 import algorithm.Algorithm;
-import javafx.beans.property.BooleanProperty;
-import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 import model.Vertex;
 

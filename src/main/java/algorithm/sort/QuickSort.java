@@ -1,8 +1,5 @@
 package algorithm.sort;
 
-import model.Bar;
-import model.BarsModel;
-
 import java.util.*;
 
 public class QuickSort extends AbstractSort {
