@@ -220,6 +220,8 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
         return true;
     }
 
+    public boolean isMazeGenerator() {return false;}
+
     public Pathfinder asPathfinder() {
         return this;
     }
@@ -231,6 +233,8 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
     public Search asSearch() {
         return null;
     }
+
+    public MazeGenerator asMazeGenerator() {return null;}
 
     @Override
     public void setVertexEventHandlers(Vertex vertex, boolean played, Text statusText) {

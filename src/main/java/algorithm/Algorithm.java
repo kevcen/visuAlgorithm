@@ -1,5 +1,6 @@
 package algorithm;
 
+import algorithm.mazegenerator.MazeGenerator;
 import algorithm.pathfinder.Pathfinder;
 import algorithm.search.Search;
 import algorithm.sort.Sort;
@@ -17,6 +18,8 @@ public interface Algorithm {
     boolean isSort();
     boolean isSearch();
     boolean isPathfinder();
+    boolean isMazeGenerator();
+    MazeGenerator asMazeGenerator();
     Pathfinder asPathfinder();
     Sort asSort();
     Search asSearch();

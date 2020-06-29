@@ -1,6 +1,7 @@
 package controller;
 
 import algorithm.Algorithm;
+import algorithm.mazegenerator.RandomisedPrim;
 import algorithm.pathfinder.AStar;
 import algorithm.pathfinder.DFS;
 import algorithm.pathfinder.Dijkstra;
@@ -65,16 +66,10 @@ public class VisualiserController {
     private BooleanProperty finished = new SimpleBooleanProperty(false);
     private boolean firstPlay = true;
     private ObservableList<String> algorithmList = FXCollections.observableArrayList(
-            "A* Pathfinder", "Dijkstra's Pathfinder", "Depth First Search", "Bubble Sort", "Insertion Sort", "Merge Sort", "Quick Sort", "Linear Search", "Binary Search");
+            "A* Pathfinder", "Dijkstra's Pathfinder", "Depth First Search", "Bubble Sort", "Insertion Sort", "Merge Sort", "Quick Sort", "Bogo Sort", "Linear Search", "Binary Search", "Random Prim's Maze");
 
     @FXML
     public void initialize() {
-
-        // Set the values of the algorithm combo box
-//        ObservableList<Text> algorithmLabels = FXCollections.observableArrayList();
-//        for (String algorithmName : algorithmList) {
-//            algorithmLabels.add(new Text(algorithmName));
-//        }
         algorithmCombo.setItems(algorithmList);
         algorithmCombo.setValue(algorithmList.get(0));
         changeAlgorithm(); // Initialise the UI to the first algorithm
@@ -91,11 +86,13 @@ public class VisualiserController {
             if(nv) {
                 playIcon.setIconLiteral("mdi-repeat");
                 if (currentAlgorithm.isSort())
-                    statusText.setText("Done: sorted!");
+                    statusText.setText("Done: sorted");
                 else if (currentAlgorithm.isSearch())
-                    statusText.setText("Done: bar " + currentAlgorithm.asSearch().getSearchBar().getValue() + " found!");
-                else
-                    statusText.setText("Done: path found!");
+                    statusText.setText("Done: " + currentAlgorithm.asSearch().getSearchBar().getValue() + " found");
+                else if (currentAlgorithm.isPathfinder())
+                    statusText.setText("Done: path found");
+                else if (currentAlgorithm.isMazeGenerator())
+                    statusText.setText("Done: maze generated");
             }
         });
     }
@@ -119,6 +116,8 @@ public class VisualiserController {
 
         // Walls spawning/erasing
         scene.addEventFilter(MouseEvent.MOUSE_MOVED, e -> {
+            if (!currentAlgorithm.isPathfinder())
+                return;
             Node node = e.getPickResult().getIntersectedNode();
             if (node instanceof Vertex) {
                 Vertex vertex = (Vertex) node;
@@ -150,7 +149,8 @@ public class VisualiserController {
 
         for (Vertex vertex : visModel.asBoardModel().getBoard()) {
             // Set on button click
-            currentAlgorithm.asPathfinder().setVertexEventHandlers(vertex, firstPlay, statusText);
+            if(currentAlgorithm.isPathfinder())
+                currentAlgorithm.asPathfinder().setVertexEventHandlers(vertex, firstPlay, statusText);
             // Set UI
             grid.add(vertex, vertex.getCol(), vertex.getRow());
         }
@@ -190,6 +190,11 @@ public class VisualiserController {
         }
     }
 
+    private void initialiseMazeGenerator() {
+        initialiseBoard();
+        currentAlgorithm.setModel(visModel);
+        statusText.setText("Press play to start");
+    }
     private void initialiseSort() {
         initialiseBars(Sort.NUM_OF_BARS);
         currentAlgorithm.setModel(visModel);
@@ -267,6 +272,10 @@ public class VisualiserController {
                 currentAlgorithm = new LinearSearch();
                 initialiseSearch(true);
                 break;
+            case "Bogo Sort":
+                currentAlgorithm = new BogoSort();
+                initialiseSort();
+                break;
             case "Binary Search":
                 currentAlgorithm = new BinarySearch();
                 initialiseSearch(false);
@@ -274,6 +283,10 @@ public class VisualiserController {
             case "Depth First Search":
                 currentAlgorithm = new DFS();
                 initialisePathfinder();
+                break;
+            case "Random Prim's Maze":
+                currentAlgorithm = new RandomisedPrim();
+                initialiseMazeGenerator();
                 break;
             default:
                 System.out.println("Unsupported algorithm");

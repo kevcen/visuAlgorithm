@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Text?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1286.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.VisualiserController">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1286.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.VisualiserController">
    <children>
       <AnchorPane layoutX="1043.0" prefHeight="295.0" prefWidth="201.0" style="-fx-background-color: #3d3d3d;">
          <children>
@@ -25,7 +25,7 @@
                <children>
                   <Text fx:id="statusText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Select starting point" textAlignment="CENTER">
                      <font>
-                        <Font name="Roboto Thin" size="17.0" />
+                        <Font name="Caviar Dreams" size="17.0" />
                      </font>
                   </Text>
                </children>

@@ -1,6 +1,7 @@
 package algorithm.search;
 
 import algorithm.AbstractAlgorithm;
+import algorithm.mazegenerator.MazeGenerator;
 import algorithm.pathfinder.Pathfinder;
 import algorithm.sort.Sort;
 import javafx.beans.property.BooleanProperty;
@@ -79,6 +80,8 @@ public abstract class AbstractSearch extends AbstractAlgorithm implements Search
         return false;
     }
 
+    public boolean isMazeGenerator() {return false;}
+
     public Pathfinder asPathfinder() {
         return null;
     }
@@ -90,4 +93,6 @@ public abstract class AbstractSearch extends AbstractAlgorithm implements Search
     public Search asSearch() {
         return this;
     }
+
+    public MazeGenerator asMazeGenerator() {return null;}
 }

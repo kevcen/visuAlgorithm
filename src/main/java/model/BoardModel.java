@@ -3,6 +3,8 @@ package model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.List;
+
 public class BoardModel implements VisualiserModel{
     public static final int NUM_OF_FRONTIER_CELLS = 4;
     public static final int ROWS = 47;
@@ -53,6 +55,23 @@ public class BoardModel implements VisualiserModel{
         }
     }
 
+    public void printMaze(Vertex current, List<Vertex> frontier) {
+        System.out.println("Board:");
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j <  COLS; j++) {
+                if (frontier.contains(getVertex(i, j))) {
+                    if (frontier.contains(current)) {
+                        System.err.println("Frontier contains current");
+                    }
+                    System.out.print("F ");
+                } else if (current == getVertex(i, j))
+                    System.out.print("C ");
+                else
+                    System.out.print(getVertex(i, j).isWall() ? "W " : "  ");
+            }
+            System.out.println();
+        }
+    }
     public ObservableList<Vertex> getFrontierNeighbours(Vertex vertex) {
         ObservableList<Vertex> frontierNeighbours = FXCollections.observableArrayList();
         Vertex[] currentFrontier = new Vertex[NUM_OF_FRONTIER_CELLS];

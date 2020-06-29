@@ -37,7 +37,6 @@ public abstract class AbstractAlgorithm implements Algorithm {
         timeline.setCycleCount(Animation.INDEFINITE);
         return timeline;
 
-
     }
 
     public DoubleProperty timePerFrameProperty() {

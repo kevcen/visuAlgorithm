@@ -24,7 +24,7 @@ public class InsertionSort extends AbstractSort {
     public void doStep() {
         var j = index;
         var elements = model.getElements();
-        while (j > 0 && elements.get(j - 1).getValue() > elements.get(j).getValue()){
+        while (j > 0 && elements.get(j - 1).getValue() > elements.get(j).getValue()) {
             Collections.swap(elements, j, j - 1);
             j--;
         }

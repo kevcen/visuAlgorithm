@@ -1,6 +1,7 @@
 package algorithm.sort;
 
 import algorithm.AbstractAlgorithm;
+import algorithm.mazegenerator.MazeGenerator;
 import algorithm.pathfinder.Pathfinder;
 import algorithm.search.Search;
 import javafx.scene.paint.Color;
@@ -54,6 +55,8 @@ public abstract class AbstractSort extends AbstractAlgorithm implements Sort {
         return false;
     }
 
+    public boolean isMazeGenerator() {return false;}
+
     public Pathfinder asPathfinder() {
         return null;
     }
@@ -65,4 +68,6 @@ public abstract class AbstractSort extends AbstractAlgorithm implements Sort {
     public Search asSearch() {
         return null;
     }
+
+    public MazeGenerator asMazeGenerator() {return null;}
 }
