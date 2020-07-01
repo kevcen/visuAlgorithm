@@ -13,9 +13,23 @@ Visualiser for the following algorithms:
 - [Binary Search](https://github.com/kevcen/visuAlgorithm/wiki/Binary-Search)
 - [Randomised Prim's Maze Generation](https://github.com/kevcen/visuAlgorithm/wiki/Randomised-Prim's-Maze-Generation)
 
-## Demo 
-
 ## How to build and run the project
 Clone the project and then run the command
 
 `./gradlew run`
+
+## Usage
+
+
+### Key inputs
+For pathfinder algorithms, you can:
+  - press and hold the key 'w' to generate walls on the vertex pointed by the cursor
+  - press 'm' to generate a new maze
+
+
+Press 'x' to exit.
+
+### Changing speed
+Use the slider to change the time per frame (in milliseconds).
+
+![SliderDemo](https://i.imgur.com/jKKGiE9.gif)
