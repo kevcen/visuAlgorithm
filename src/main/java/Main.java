@@ -16,7 +16,6 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Font.loadFont(getClass().getResourceAsStream("fonts/CaviarDreams.ttf"), ARBITRARY_FONT_SIZE);
-        //TODO: Fix text colour
         //show login screen
         var loader = new FXMLLoader(getClass().getResource("view/visualiser.fxml"));
         Parent root = loader.load();

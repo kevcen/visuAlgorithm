@@ -35,7 +35,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class VisualiserController {
-
+    public static double VISUALISER_WIDTH = 900.0;
     private VisualiserModel visModel;
     private Scene scene;
     @FXML
@@ -47,7 +47,7 @@ public class VisualiserController {
     @FXML
     JFXSlider timeSlider;
     @FXML
-    Text statusText;
+    Text statusText, loadingText;
     @FXML
     FontIcon playIcon;
 
@@ -138,19 +138,21 @@ public class VisualiserController {
             e.printStackTrace();
         }
 
-        // Clear pre-existing children
-        grid.getColumnConstraints().clear();
-        grid.getRowConstraints().clear();
+        Platform.runLater(()-> {
+            // Clear pre-existing children
+            grid.getRowConstraints().clear();
+            grid.getColumnConstraints().clear();
 
-        for (Vertex vertex : visModel.asBoardModel().getBoard()) {
-            // Set on button click
-            if(currentAlgorithm.isPathfinder())
-                currentAlgorithm.asPathfinder().setVertexEventHandlers(vertex, firstPlay, statusText);
-            // Set UI
-            grid.add(vertex, vertex.getCol(), vertex.getRow());
-        }
+            for (Vertex vertex : visModel.asBoardModel().getBoard()) {
+                // Set on button click
+                if(currentAlgorithm.isPathfinder())
+                    currentAlgorithm.asPathfinder().setVertexEventHandlers(vertex, firstPlay, statusText);
+                // Set UI
+                grid.add(vertex, vertex.getCol(), vertex.getRow());
+            }
 
-        visualiserPane.getChildren().setAll(grid);
+            visualiserPane.getChildren().setAll(grid);
+        });
     }
 
 
@@ -165,14 +167,16 @@ public class VisualiserController {
             e.printStackTrace();
         }
 
-        for (Bar bar : visModel.asBarsModel().getElements()) {
-            if (currentAlgorithm.isSearch()) {
-                currentAlgorithm.asSearch().setBarEventHandlers(bar, playing, statusText);
+        Platform.runLater(()-> {
+            for (Bar bar : visModel.asBarsModel().getElements()) {
+                if (currentAlgorithm.isSearch()) {
+                    currentAlgorithm.asSearch().setBarEventHandlers(bar, playing, statusText);
+                }
+                barsPane.getChildren().add(bar);
             }
-            barsPane.getChildren().add(bar);
-        }
 
-        visualiserPane.getChildren().setAll(barsPane);
+            visualiserPane.getChildren().setAll(barsPane);
+        });
     }
 
     private void initialisePathfinder() {
@@ -188,22 +192,28 @@ public class VisualiserController {
     private void initialiseMazeGenerator() {
         initialiseBoard();
         currentAlgorithm.setModel(visModel);
-        statusText.setText("Press play to start");
+        Platform.runLater(()-> {
+            statusText.setText("Press play to start");
+        });
     }
     private void initialiseSort() {
         initialiseBars(Sort.NUM_OF_BARS);
         currentAlgorithm.setModel(visModel);
         visModel.asBarsModel().randomiseBars();
-        currentAlgorithm.asSort().visualise();
-        statusText.setText("Press play to start");
+        Platform.runLater(()-> {
+            currentAlgorithm.asSort().visualise();
+            statusText.setText("Press play to start");
+        });
     }
 
     private void initialiseSearch(boolean shuffle) {
         initialiseBars(Search.NUM_OF_BARS);
         currentAlgorithm.setModel(visModel);
         if (shuffle) visModel.asBarsModel().randomiseBars();
-        currentAlgorithm.asSearch().visualise();
-        statusText.setText("Select bar to search for");
+        Platform.runLater(()-> {
+            currentAlgorithm.asSearch().visualise();
+            statusText.setText("Select bar to search for");
+        });
     }
 
     @FXML
@@ -230,75 +240,77 @@ public class VisualiserController {
 
     @FXML
     public void changeAlgorithm() {
-        //TODO: Make the stuff after loading a different task?
-//        System.out.println("hi");
-        if(animation != null) animation.stop(); //Stop previous animation if exists
+        visualiserPane.getChildren().setAll(loadingText);
         statusText.setText("Loading");
-        finished.set(false);
-        playing.set(false);
-        firstPlay = true;
+//        System.out.println("hi");
+        new Thread(()-> {
+            if(animation != null) animation.stop(); //Stop previous animation if exists
+            finished.set(false);
+            playing.set(false);
+            firstPlay = true;
 
-        switch (algorithmCombo.getValue()) {
-            case "A* Pathfinder":
-                currentAlgorithm = new AStar();
-                initialisePathfinder();
-                break;
-            case "Dijkstra's Pathfinder":
-                currentAlgorithm = new Dijkstra();
-                initialisePathfinder();
-                break;
-            case "Bubble Sort":
-                currentAlgorithm = new BubbleSort();
-                initialiseSort();
-                break;
-            case "Insertion Sort":
-                currentAlgorithm = new InsertionSort();
-                initialiseSort();
-                break;
-            case "Merge Sort":
-                currentAlgorithm = new MergeSort();
-                initialiseSort();
-                break;
-            case "Quick Sort":
-                currentAlgorithm = new QuickSort();
-                initialiseSort();
-                break;
-            case "Linear Search":
-                currentAlgorithm = new LinearSearch();
-                initialiseSearch(true);
-                break;
-            case "Bogo Sort":
-                currentAlgorithm = new BogoSort();
-                initialiseSort();
-                break;
-            case "Binary Search":
-                currentAlgorithm = new BinarySearch();
-                initialiseSearch(false);
-                break;
-            case "Depth First Search":
-                currentAlgorithm = new DFS();
-                initialisePathfinder();
-                break;
-            case "Breadth First Search":
-                currentAlgorithm = new BFS();
-                initialisePathfinder();
-                break;
-            case "Random Prim's Maze":
-                currentAlgorithm = new RandomisedPrim();
-                initialiseMazeGenerator();
-                break;
-            case "Random Kruskal's Maze":
-                currentAlgorithm = new RandomisedKruskal();
-                initialiseMazeGenerator();
-                break;
-            default:
-                System.out.println("Unsupported algorithm");
-                return;
-        }
+            switch (algorithmCombo.getValue()) {
+                case "A* Pathfinder":
+                    currentAlgorithm = new AStar();
+                    initialisePathfinder();
+                    break;
+                case "Dijkstra's Pathfinder":
+                    currentAlgorithm = new Dijkstra();
+                    initialisePathfinder();
+                    break;
+                case "Bubble Sort":
+                    currentAlgorithm = new BubbleSort();
+                    initialiseSort();
+                    break;
+                case "Insertion Sort":
+                    currentAlgorithm = new InsertionSort();
+                    initialiseSort();
+                    break;
+                case "Merge Sort":
+                    currentAlgorithm = new MergeSort();
+                    initialiseSort();
+                    break;
+                case "Quick Sort":
+                    currentAlgorithm = new QuickSort();
+                    initialiseSort();
+                    break;
+                case "Linear Search":
+                    currentAlgorithm = new LinearSearch();
+                    initialiseSearch(true);
+                    break;
+                case "Bogo Sort":
+                    currentAlgorithm = new BogoSort();
+                    initialiseSort();
+                    break;
+                case "Binary Search":
+                    currentAlgorithm = new BinarySearch();
+                    initialiseSearch(false);
+                    break;
+                case "Depth First Search":
+                    currentAlgorithm = new DFS();
+                    initialisePathfinder();
+                    break;
+                case "Breadth First Search":
+                    currentAlgorithm = new BFS();
+                    initialisePathfinder();
+                    break;
+                case "Random Prim's Maze":
+                    currentAlgorithm = new RandomisedPrim();
+                    initialiseMazeGenerator();
+                    break;
+                case "Random Kruskal's Maze":
+                    currentAlgorithm = new RandomisedKruskal();
+                    initialiseMazeGenerator();
+                    break;
+                default:
+                    System.out.println("Unsupported algorithm");
+                    return;
+            }
 
-        // Control speed of animation with timeSlider
-        currentAlgorithm.timePerFrameProperty().bind(timeSlider.valueProperty());
-        timeSlider.valueProperty().addListener((obs, ov, nv) -> animation = currentAlgorithm.changeTime(playing.get()));
+            // Control speed of animation with timeSlider
+            currentAlgorithm.timePerFrameProperty().bind(timeSlider.valueProperty());
+            timeSlider.valueProperty().addListener((obs, ov, nv) -> animation = currentAlgorithm.changeTime(playing.get()));
+        }).start();
 
     }
 

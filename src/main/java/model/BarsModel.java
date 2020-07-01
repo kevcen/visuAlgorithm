@@ -1,5 +1,6 @@
 package model;
 
+import controller.VisualiserController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -7,11 +8,10 @@ import java.util.Collections;
 
 public class BarsModel implements VisualiserModel {
 
-    //TODO: Refactor size of scene into constants
     private ObservableList<Bar> elements = FXCollections.observableArrayList();
 
     public static double getWidthOfBar(int numBars) {
-        return 900.0 / numBars;
+        return VisualiserController.VISUALISER_WIDTH / numBars;
     }
 
     public void setBars(int numBars) {

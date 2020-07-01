@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Text?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1286.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.VisualiserController">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1286.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.VisualiserController">
    <children>
       <AnchorPane layoutX="1043.0" prefHeight="295.0" prefWidth="201.0" style="-fx-background-color: #3d3d3d;">
          <children>
@@ -31,6 +31,12 @@
                </children>
             </StackPane>
          </children></AnchorPane>
-      <AnchorPane fx:id="visualiserPane" prefHeight="704.0" prefWidth="1012.0" style="-fx-background-color: #3d3d3d;" />
+      <AnchorPane fx:id="visualiserPane" prefHeight="704.0" prefWidth="1012.0" style="-fx-background-color: #3d3d3d;">
+         <children>
+            <Text fx:id="loadingText" fill="WHITE" layoutX="351.0" layoutY="378.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Loading" textAlignment="CENTER">
+               <font>
+                  <Font name="Caviar Dreams" size="78.0" />
+               </font></Text>
+         </children></AnchorPane>
    </children>
 </AnchorPane>
