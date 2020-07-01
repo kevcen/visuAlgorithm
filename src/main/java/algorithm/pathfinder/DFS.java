@@ -18,12 +18,10 @@ public class DFS extends AbstractPathfinder {
     public void doStep() {
         currentVertexProperty().set(stack.pop());
         currentVertexProperty().get().setVisited(true);
-        for (Vertex neighbour : currentVertexProperty().get().getNeighbours()) {
-            if (neighbour.isWall() || neighbour.isVisited())
-                continue;
-            stack.push(neighbour);
-            neighbour.setParentVertex(currentVertexProperty().get());
-        }
+        currentVertexProperty().get().getNeighbours().stream().filter(v -> !(v.isWall() || v.isVisited())).forEach(v -> {
+            stack.push(v);
+            v.setParentVertex(currentVertexProperty().get());
+        });
     }
 
     @Override

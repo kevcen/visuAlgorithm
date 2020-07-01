@@ -69,11 +69,6 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
         visualise();
     }
 
-    /**
-     * Sets the start and end vertices respectively
-     * @param start
-     * @param end
-     */
     @Override
     public void setVertices(Vertex start, Vertex end) {
         assert(start != null && end != null);
@@ -85,26 +80,17 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
         return vertex.equals(startVertex.get()) || vertex.equals(endVertex.get());
     }
 
-    /**
-     * Returns the fringe of the algorithm
-     */
     public ObservableList<Vertex> getFringe() {
         return fringe;
     }
 
 
-    /**
-     * Returns true if and only there is another step in the algorithm
-     */
     @Override
     public boolean hasNext() {
         return !endVertex.get().isVisited() && !getFringe().isEmpty();
     }
 
 
-    /**
-     * Use the current state of the algorithm to visualise the current state
-     */
     public void visualise() {
         for (Vertex vertex : model.getBoard()) {
             if (vertex.equals(currentVertex.get()))
@@ -124,9 +110,6 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
         }
     }
 
-    /**
-     * Visualise the final path
-     */
     public void showResult() {
         if (!endVertex.get().isVisited()) {
             System.out.println("No path available");
@@ -141,11 +124,6 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
     }
 
 
-    /**
-     * Return the vertex with the smallest value in the map
-     * @param map
-     * @return the smallest vertex in the map
-     */
     protected Vertex visitSmallestVertex(ObservableMap<Vertex, Double> map) {
         // Get the fringe node with smallest f value
         var currentVertex = getFringe().get(0);
@@ -159,12 +137,6 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
         return currentVertex;
     }
 
-    /**
-     * Used in a step of the algorithm, updates the values in the map of the neighbours according to the currentVertex
-     * NB. hValue is set to 0 for algorithms that do not use it i.e. Dijkstra's
-     * @param currentVertex
-     * @param map
-     */
     protected void updateNeighbours(Vertex currentVertex, ObservableMap<Vertex, Double> map) {
         for (Vertex neighbour : currentVertex.getNeighbours()) {
             if (neighbour.isWall())
