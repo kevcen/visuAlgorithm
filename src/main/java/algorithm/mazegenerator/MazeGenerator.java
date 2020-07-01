@@ -6,4 +6,5 @@ import model.VisualiserModel;
 public interface MazeGenerator extends Algorithm {
     void generateMaze();
     void setModel(VisualiserModel model);
+    void createHoledGrid();
 }

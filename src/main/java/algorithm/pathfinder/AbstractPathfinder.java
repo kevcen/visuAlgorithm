@@ -141,10 +141,9 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
         for (Vertex neighbour : currentVertex.getNeighbours()) {
             if (neighbour.isWall())
                 continue;
-            boolean nonDiagonal = neighbour.getCol() == currentVertex.getCol()
-                    || neighbour.getRow() == currentVertex.getRow();
 
-            double distance = currentVertex.gValue() + (nonDiagonal ? NON_DIAG_COST : DIAG_COST);
+            double distance = currentVertex.gValue() +
+                    (currentVertex.getNonDiagNeighbours().contains(neighbour) ? NON_DIAG_COST : DIAG_COST);
 
             if (!neighbour.isVisited()) {
                 if (getFringe().contains(neighbour)) {

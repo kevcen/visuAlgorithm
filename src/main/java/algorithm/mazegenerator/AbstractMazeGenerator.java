@@ -66,7 +66,7 @@ public abstract class AbstractMazeGenerator extends AbstractAlgorithm implements
 
     @Override
     public boolean isMazeGenerator() {
-        return false;
+        return true;
     }
 
     @Override
@@ -95,14 +95,6 @@ public abstract class AbstractMazeGenerator extends AbstractAlgorithm implements
         return null;
     }
 
-    @Override
-    public void initialiseStep() {
-        int mid = BoardModel.ROWS / 2 * BoardModel.COLS + BoardModel.COLS / 2;
-        var startVertex = model.getBoard().get(mid);
-
-        startVertex.setWall(false);
-        addFrontierCells(startVertex);
-    }
 
     @Override
     public boolean hasNext() {
@@ -134,4 +126,15 @@ public abstract class AbstractMazeGenerator extends AbstractAlgorithm implements
         return model;
     }
 
+    public void createHoledGrid() {
+        for (int i = 0; i < BoardModel.ROWS; i++) {
+            for (int j = 0; j < BoardModel.COLS; j++) {
+                if (j % 2 == 0 || i % 2 == 0) {
+                    model.getVertex(i, j).setWall(true);
+                } else {
+                    model.getVertex(i, j).setWall(false);
+                }
+            }
+        }
+    }
 }

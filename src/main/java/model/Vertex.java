@@ -4,6 +4,9 @@ import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class Vertex extends JFXButton {
     public static final String styles = "-fx-background-radius: 0; -fx-border-color: white; -fx-border-width: 0.1";
     private final int row, col;
@@ -25,11 +28,13 @@ public class Vertex extends JFXButton {
         resetStyle();
     }
 
-    public ObservableList<Vertex> getNeighbours() {
+    public List<Vertex> getNeighbours() {
         return neighbours;
     }
 
-
+    public List<Vertex> getNonDiagNeighbours() {
+        return neighbours.stream().filter(v -> v.getRow() == row || v.getCol() == col).collect(Collectors.toList());
+    }
 
     public int getRow() {
         return row;

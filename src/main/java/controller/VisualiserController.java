@@ -1,6 +1,7 @@
 package controller;
 
 import algorithm.Algorithm;
+import algorithm.mazegenerator.RandomisedKruskal;
 import algorithm.mazegenerator.RandomisedPrim;
 import algorithm.pathfinder.*;
 import algorithm.search.BinarySearch;
@@ -60,7 +61,7 @@ public class VisualiserController {
     private BooleanProperty finished = new SimpleBooleanProperty(false);
     private boolean firstPlay = true;
     private ObservableList<String> algorithmList = FXCollections.observableArrayList(
-            "A* Pathfinder", "Dijkstra's Pathfinder", "Depth First Search", "Breadth First Search", "Bubble Sort", "Insertion Sort", "Merge Sort", "Quick Sort", "Bogo Sort", "Linear Search", "Binary Search", "Random Prim's Maze");
+            "A* Pathfinder", "Dijkstra's Pathfinder", "Depth First Search", "Breadth First Search", "Bubble Sort", "Insertion Sort", "Merge Sort", "Quick Sort", "Bogo Sort", "Linear Search", "Binary Search", "Random Prim's Maze", "Random Kruskal's Maze");
 
     @FXML
     public void initialize() {
@@ -284,6 +285,10 @@ public class VisualiserController {
                 break;
             case "Random Prim's Maze":
                 currentAlgorithm = new RandomisedPrim();
+                initialiseMazeGenerator();
+                break;
+            case "Random Kruskal's Maze":
+                currentAlgorithm = new RandomisedKruskal();
                 initialiseMazeGenerator();
                 break;
             default:

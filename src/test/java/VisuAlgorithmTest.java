@@ -18,17 +18,23 @@ public class VisuAlgorithmTest extends ApplicationTest {
     }
 
     @Test
-    public void test() {
+    public void mazeTest() {
         MazeGenerator mazeGenerator = new RandomisedPrim();
 
         BoardModel model = new BoardModel();
-        System.out.print("Before ");
+        System.out.print("Before Maze");
         model.printMaze();
         mazeGenerator.setModel(model);
 
         mazeGenerator.generateMaze();
 
-        System.out.print("After ");
+        System.out.print("After Maze");
+        model.printMaze();
+
+
+
+        System.out.print("Create holed grid ");
+        mazeGenerator.createHoledGrid();
         model.printMaze();
     }
 

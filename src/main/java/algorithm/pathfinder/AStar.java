@@ -22,7 +22,7 @@ public class AStar extends AbstractPathfinder {
             getFringe().add(neighbour);
             neighbour.setParentVertex(startVertexProperty().get());
 
-            if (neighbour.getRow() == startVertexProperty().get().getRow() || neighbour.getCol() == startVertexProperty().get().getCol())
+            if (startVertexProperty().get().getNonDiagNeighbours().contains(neighbour))
                 neighbour.setGValue(NON_DIAG_COST);
             else
                 neighbour.setGValue(DIAG_COST);

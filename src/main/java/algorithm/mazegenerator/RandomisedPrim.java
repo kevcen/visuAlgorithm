@@ -15,6 +15,14 @@ import java.util.stream.Collectors;
 
 
 public class RandomisedPrim extends AbstractMazeGenerator {
+    @Override
+    public void initialiseStep() {
+        int mid = BoardModel.ROWS / 2 * BoardModel.COLS + BoardModel.COLS / 2;
+        var startVertex = getModel().getBoard().get(mid);
+
+        startVertex.setWall(false);
+        addFrontierCells(startVertex);
+    }
 
     @Override
     public void doStep() {
@@ -34,9 +42,9 @@ public class RandomisedPrim extends AbstractMazeGenerator {
             assert (middleVertex.getRow() == middleRow && middleVertex.getCol() == middleCol);
             middleVertex.setWall(false);
             randomFrontierCell.setWall(false);
+            addFrontierCells(randomFrontierCell);
         }
 
-        addFrontierCells(randomFrontierCell);
         getFrontier().remove(randomFrontierCell);
     }
 
