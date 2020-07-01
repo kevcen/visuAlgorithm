@@ -20,17 +20,6 @@ Clone the project and then run the command
 `./gradlew run`
 
 ## Usage
+Detailed information in the [the wiki](https://github.com/kevcen/visuAlgorithm/wiki).
 
 
-### Key inputs
-For pathfinder algorithms, you can:
-  - press and hold the key 'w' to generate walls on the vertex below the cursor,
-  - press 'm' to generate a new maze.
-
-
-Press 'x' to exit.
-
-### Changing speed
-Use the slider to change the time per frame (in milliseconds).
-
-![SliderDemo](https://i.imgur.com/jKKGiE9.gif)
