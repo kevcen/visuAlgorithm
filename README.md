@@ -23,8 +23,8 @@ Clone the project and then run the command
 
 ### Key inputs
 For pathfinder algorithms, you can:
-  - press and hold the key 'w' to generate walls on the vertex pointed by the cursor
-  - press 'm' to generate a new maze
+  - press and hold the key 'w' to generate walls on the vertex below the cursor,
+  - press 'm' to generate a new maze.
 
 
 Press 'x' to exit.
