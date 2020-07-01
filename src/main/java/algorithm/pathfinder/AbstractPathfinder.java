@@ -212,7 +212,7 @@ public abstract class AbstractPathfinder extends AbstractAlgorithm implements Pa
     public void setVertexEventHandlers(Vertex vertex, boolean played, Text statusText) {
         // Clicked, change state of vertices
         vertex.setOnMouseClicked(e -> {
-            if (!played || vertex.isWall()) {
+            if (!played || vertex.isWall() || (isGraphTraversal() && !mazeGeneratedProperty().get())) {
                 return;
             }
             if (startVertex.get() == vertex) {

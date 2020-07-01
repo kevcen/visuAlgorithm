@@ -2,9 +2,7 @@ package controller;
 
 import algorithm.Algorithm;
 import algorithm.mazegenerator.RandomisedPrim;
-import algorithm.pathfinder.AStar;
-import algorithm.pathfinder.DFS;
-import algorithm.pathfinder.Dijkstra;
+import algorithm.pathfinder.*;
 import algorithm.search.BinarySearch;
 import algorithm.search.LinearSearch;
 import algorithm.search.Search;
@@ -62,7 +60,7 @@ public class VisualiserController {
     private BooleanProperty finished = new SimpleBooleanProperty(false);
     private boolean firstPlay = true;
     private ObservableList<String> algorithmList = FXCollections.observableArrayList(
-            "A* Pathfinder", "Dijkstra's Pathfinder", "Depth First Search", "Bubble Sort", "Insertion Sort", "Merge Sort", "Quick Sort", "Bogo Sort", "Linear Search", "Binary Search", "Random Prim's Maze");
+            "A* Pathfinder", "Dijkstra's Pathfinder", "Depth First Search", "Breadth First Search", "Bubble Sort", "Insertion Sort", "Merge Sort", "Quick Sort", "Bogo Sort", "Linear Search", "Binary Search", "Random Prim's Maze");
 
     @FXML
     public void initialize() {
@@ -179,7 +177,7 @@ public class VisualiserController {
     private void initialisePathfinder() {
         initialiseBoard();
         currentAlgorithm.setModel(visModel);
-        if (currentAlgorithm instanceof DFS) {
+        if (currentAlgorithm.asPathfinder().isGraphTraversal()) {
             statusText.setText("Press 'm' to create a maze");
         } else {
             statusText.setText("Select starting point");
@@ -278,6 +276,10 @@ public class VisualiserController {
                 break;
             case "Depth First Search":
                 currentAlgorithm = new DFS();
+                initialisePathfinder();
+                break;
+            case "Breadth First Search":
+                currentAlgorithm = new BFS();
                 initialisePathfinder();
                 break;
             case "Random Prim's Maze":
