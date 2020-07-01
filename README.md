@@ -12,6 +12,7 @@ Visualiser for the following algorithms:
 - [Linear Search](https://github.com/kevcen/visuAlgorithm/wiki/Linear-Search)
 - [Binary Search](https://github.com/kevcen/visuAlgorithm/wiki/Binary-Search)
 - [Randomised Prim's Maze Generation](https://github.com/kevcen/visuAlgorithm/wiki/Randomised-Prim's-Maze-Generation)
+- Randomised Kruskal's Maze Generation (not implemented yet)
 
 ## How to build and run the project
 Clone the project and then run the command
