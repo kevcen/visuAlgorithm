@@ -1,38 +1,26 @@
 import algorithm.mazegenerator.MazeGenerator;
 import algorithm.mazegenerator.RandomisedKruskal;
 import algorithm.mazegenerator.RandomisedPrim;
+import algorithm.pathfinder.AStar;
+import algorithm.pathfinder.Pathfinder;
 import algorithm.search.BinarySearch;
 import algorithm.search.LinearSearch;
 import algorithm.search.Search;
 import algorithm.sort.*;
-import com.jfoenix.controls.JFXComboBox;
-import controller.VisualiserController;
-import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import model.BarsModel;
 import model.BoardModel;
+import model.Vertex;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.testfx.api.FxRobot;
-import org.testfx.framework.junit5.ApplicationExtension;
-import org.testfx.framework.junit5.Start;
+import org.testfx.framework.junit5.ApplicationTest;
 
-import java.io.IOException;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ExtendWith(ApplicationExtension.class)
-public class VisuAlgorithmTest {
+public class VisuAlgorithmTest extends ApplicationTest {
+    private static int DECIMAL_PLACES = 10;
 
-    @Start
-    public void start(Stage stage) {
-        stage.show();
-    }
 
     @Test
     public void testMazeGenerators() {
@@ -72,15 +60,10 @@ public class VisuAlgorithmTest {
 
         //barsModel.printBars();
 
-        boolean sorted = true;
         for (int i = 1; i < Sort.NUM_OF_BARS; i++) {
-            if (barsModel.getElements().get(i - 1).getValue() > barsModel.getElements().get(i).getValue()) {
-                sorted = false;
-                break;
-            }
+            assertTrue(barsModel.getElements().get(i - 1).getValue() < barsModel.getElements().get(i).getValue());
         }
 
-        assertTrue(sorted);
     }
 
     @Test
@@ -109,4 +92,30 @@ public class VisuAlgorithmTest {
     }
 
 
+    @Test
+    public void testHeuristicIsConsistent() {
+        var pathfinder = new AStar();
+        var boardModel = new BoardModel();
+        pathfinder.setModel(boardModel);
+
+        var rand = new Random();
+        pathfinder.endVertexProperty().set(boardModel.getBoard().get(rand.nextInt(boardModel.getBoard().size())));
+        pathfinder.startVertexProperty().set(boardModel.getBoard().get(rand.nextInt(boardModel.getBoard().size())));
+
+        pathfinder.processHeuristic();
+
+        for (Vertex vertex : boardModel.getBoard()) {
+            for (Vertex neighbour : vertex.getNeighbours()) {
+                double weight = vertex.getNonDiagNeighbours().contains(neighbour)? Pathfinder.NON_DIAG_COST : Pathfinder.DIAG_COST;
+
+                assertTrue(roundToDecimalPlaces(vertex.hValue()) <= roundToDecimalPlaces(weight + neighbour.hValue()));
+            }
+        }
+    }
+
+    // Rounding needs to be used due to imprecise floating arithmetic
+    private double roundToDecimalPlaces(double value) {
+        double multiplier = Math.pow(10, DECIMAL_PLACES);
+        return Math.round(value * multiplier) / multiplier;
+    }
 }
