@@ -15,7 +15,7 @@ Visualiser for the following algorithms:
 - [Randomised Kruskal's Maze Generation](https://github.com/kevcen/visuAlgorithm/wiki/Randomised-Kruskal's-Maze-Generation)
 
 ## How to build and run the project
-Clone the project and then run the command
+Simply clone the project and then run the command
 
 `./gradlew run`
 
