@@ -22,7 +22,7 @@ public class Main extends Application {
         VisualiserController controller = loader.getController();
 
         Scene mainScene = new Scene(root);
-        controller.addScene(mainScene);
+        controller.initScene(mainScene);
 
         mainScene.setFill(null);
         stage.initStyle(StageStyle.TRANSPARENT);

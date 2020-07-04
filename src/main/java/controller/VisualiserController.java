@@ -93,7 +93,7 @@ public class VisualiserController {
     }
 
 
-    public void addScene(Scene scene) {
+    public void initScene(Scene scene) {
         this.scene = scene;
 
         // Walls for pathfinders
@@ -126,6 +126,10 @@ public class VisualiserController {
                 }
             }
         });
+    }
+
+    public JFXComboBox<String> getAlgorithmCombo() {
+        return algorithmCombo;
     }
 
     private void initialiseBoard() {
@@ -196,6 +200,11 @@ public class VisualiserController {
             statusText.setText("Press play to start");
         });
     }
+
+    public VisualiserModel getVisModel() {
+        return visModel;
+    }
+
     private void initialiseSort() {
         initialiseBars(Sort.NUM_OF_BARS);
         currentAlgorithm.setModel(visModel);
@@ -217,7 +226,7 @@ public class VisualiserController {
     }
 
     @FXML
-    public void performAlgorithm(ActionEvent event) {
+    public void performAlgorithm() {
         if (!currentAlgorithm.canPlay())
             return;
         else if (finished.get())

@@ -126,15 +126,5 @@ public abstract class AbstractMazeGenerator extends AbstractAlgorithm implements
         return model;
     }
 
-    public void createHoledGrid() {
-        for (int i = 0; i < BoardModel.ROWS; i++) {
-            for (int j = 0; j < BoardModel.COLS; j++) {
-                if (j % 2 == 0 || i % 2 == 0) {
-                    model.getVertex(i, j).setWall(true);
-                } else {
-                    model.getVertex(i, j).setWall(false);
-                }
-            }
-        }
-    }
+
 }
