@@ -13,7 +13,7 @@
    <children>
       <AnchorPane layoutX="1043.0" prefHeight="295.0" prefWidth="201.0" style="-fx-background-color: #3d3d3d;">
          <children>
-            <JFXComboBox fx:id="algorithmCombo" focusColor="#bbbbbb" layoutY="268.0" onAction="#changeAlgorithm" prefHeight="33.0" prefWidth="223.0" stylesheets="@../css/algorithmcombobox.css" unFocusColor="#bbbbbb" />
+            <JFXComboBox id="algorithmCombo" fx:id="algorithmCombo" focusColor="#bbbbbb" layoutY="268.0" onAction="#changeAlgorithm" prefHeight="33.0" prefWidth="223.0" stylesheets="@../css/algorithmcombobox.css" unFocusColor="#bbbbbb" />
             <JFXSlider fx:id="timeSlider" blockIncrement="1.0" layoutY="163.0" min="1.0" prefHeight="16.0" prefWidth="223.0" stylesheets="@../css/timeSlider.css" value="30.0" />
             <StackPane layoutY="-1.0" prefHeight="162.0" prefWidth="219.0">
                <children>

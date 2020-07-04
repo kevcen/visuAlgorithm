@@ -41,4 +41,9 @@ public class BarsModel implements VisualiserModel {
     public BoardModel asBoardModel() {
         return null;
     }
+
+    public void printBars() {
+        elements.forEach(b -> System.out.print(b.getValue() + " "));
+        System.out.println();
+    }
 }

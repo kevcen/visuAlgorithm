@@ -8,8 +8,6 @@ public class BubbleSort extends AbstractSort {
 
     @Override
     public void initialiseStep() {
-        var lastBar = model.getElements().get(Sort.NUM_OF_BARS - 1);
-        lastBar.setVisited();
     }
 
     @Override
@@ -21,15 +19,16 @@ public class BubbleSort extends AbstractSort {
     public void doStep() {
         boolean swapped = false;
         var elements = model.getElements();
-        for (int i = 1; i < Sort.NUM_OF_BARS; i++) {
-            currentBar = elements.get(i);
-            if (elements.get(i).isVisited()) {
+        for (int i = 1; i <= Sort.NUM_OF_BARS; i++) {
+
+            if ( i == Sort.NUM_OF_BARS || elements.get(i).isVisited()) {
                 elements.get(i-1).setVisited();
                 break;
             } else if (elements.get(i - 1).getValue() > elements.get(i).getValue()) {
                 Collections.swap(model.getElements(), i - 1, i);
                 swapped = true;
             }
+            currentBar = elements.get(i);
         }
         if(!swapped) sorted = true;
     }

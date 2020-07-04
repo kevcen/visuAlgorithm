@@ -32,10 +32,7 @@ public abstract class AbstractMazeGenerator extends AbstractAlgorithm implements
 
     @Override
     public void generateMaze() {
-        initialiseStep();
-
-        while (hasNext())
-            doStep();
+        doAlgorithm();
     }
 
     private void printFrontier() {

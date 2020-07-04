@@ -25,6 +25,14 @@ public abstract class AbstractSearch extends AbstractAlgorithm implements Search
         this.model = model.asBarsModel();
     }
 
+    public Bar getCurrentBar() {
+        return currentBar;
+    }
+
+    public void setSearchBar(Bar searchBar) {
+        this.searchBar = searchBar;
+    }
+
     public void setBarEventHandlers(Bar bar, BooleanProperty playing, Text statusText) {
         // Select search bar
         bar.setHeightScale(2);

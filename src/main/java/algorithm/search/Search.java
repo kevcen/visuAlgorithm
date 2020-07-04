@@ -9,4 +9,6 @@ public interface Search extends Algorithm {
     int NUM_OF_BARS = 250;
     void setBarEventHandlers(Bar bar, BooleanProperty playing, Text statusText);
     Bar getSearchBar();
+    Bar getCurrentBar();
+    void setSearchBar(Bar bar);
 }

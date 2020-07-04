@@ -65,8 +65,6 @@ public class RandomisedKruskal extends AbstractMazeGenerator {
                 randomNeighbour.setWall(false);
                 oppositeNeighbour.setWall(false);
                 randomWall.setWall(false);
-            } else {
-                System.out.println("Sets equal, not merging");
             }
         }
     }

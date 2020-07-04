@@ -132,6 +132,32 @@ public class VisualiserController {
         return algorithmCombo;
     }
 
+
+    public VisualiserModel getVisModel() {
+        return visModel;
+    }
+
+    @FXML
+    public void performAlgorithm() {
+        if (!currentAlgorithm.canPlay())
+            return;
+        else if (finished.get())
+            changeAlgorithm();
+        else if (playing.get()) {
+            animation.pause();
+            playing.set(false);
+        }else if (!firstPlay) {
+            animation.play();
+            playing.set(true);
+        }else {
+            firstPlay = false;
+            playing.set(true);
+            currentAlgorithm.initialiseStep();
+
+            animation = currentAlgorithm.getAnimation(finished);
+            animation.play();
+        }
+    }
     private void initialiseBoard() {
         visModel = new BoardModel();
 
@@ -201,10 +227,6 @@ public class VisualiserController {
         });
     }
 
-    public VisualiserModel getVisModel() {
-        return visModel;
-    }
-
     private void initialiseSort() {
         initialiseBars(Sort.NUM_OF_BARS);
         currentAlgorithm.setModel(visModel);
@@ -226,28 +248,6 @@ public class VisualiserController {
     }
 
     @FXML
-    public void performAlgorithm() {
-        if (!currentAlgorithm.canPlay())
-            return;
-        else if (finished.get())
-            changeAlgorithm();
-        else if (playing.get()) {
-            animation.pause();
-            playing.set(false);
-        }else if (!firstPlay) {
-            animation.play();
-            playing.set(true);
-        }else {
-            firstPlay = false;
-            playing.set(true);
-            currentAlgorithm.initialiseStep();
-
-            animation = currentAlgorithm.getAnimation(finished);
-            animation.play();
-        }
-    }
-
-    @FXML
     public void changeAlgorithm() {
         visualiserPane.getChildren().setAll(loadingText);
         statusText.setText("Loading");
@@ -258,6 +258,7 @@ public class VisualiserController {
             playing.set(false);
             firstPlay = true;
 
+            System.out.println(algorithmCombo.getValue());
             switch (algorithmCombo.getValue()) {
                 case "A* Pathfinder":
                     currentAlgorithm = new AStar();

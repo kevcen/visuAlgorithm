@@ -30,4 +30,5 @@ public interface Algorithm {
     void showResult();
     DoubleProperty timePerFrameProperty();
     Timeline changeTime(boolean playing);
+    void doAlgorithm();
 }

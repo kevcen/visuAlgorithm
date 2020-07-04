@@ -26,6 +26,14 @@ public abstract class AbstractAlgorithm implements Algorithm {
     };
 
     @Override
+    public void doAlgorithm() {
+        initialiseStep();
+
+        while (hasNext())
+            doStep();
+    }
+
+    @Override
     public Timeline getAnimation(BooleanProperty finished) {
         this.finished = finished;
         timeline = new Timeline();
